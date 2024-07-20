@@ -59,13 +59,6 @@ coverage/
 public/
 dist/
 
-# Arquivos de Imagem
-*.png
-*.jpg
-*.jpeg
-*.gif
-*.ico
-
 # Documentação Gerada
 docs/
 *.pdf
