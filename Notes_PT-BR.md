@@ -104,3 +104,19 @@ LogLevel:
 |Critical|Falhas graves que necessitam de atenção imediata|
 
 Para mais detalhes sobre logging no .NET Core e ASP.NET Core, consulte a [documentação oficial da Microsoft]("https://learn.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-6.0").
+
+## O que NuGet?
+
+NuGet é o gerenciador de pacotes oficial para a plataforma .NET.
+
+Ele simplifica o processo de adicionar, atualizar e remover bibliotecas e ferramentas.
+
+Permite aos desenvolvedores compartilhar código de maneira eficiente e gerenciar as dependências do projeto.
+
+### Pacotes NuGet
+
+Um pacote NuGet é uma coleção de arquivos que são compilados e empacotados em um único arquivo com extensão `.nupkg`.
+
+Cada pacote contém metadados que descrevem seu conteúdo, dependências e outros detalhes importantes.
+
+A instalação de pacotes pode ser feita através do Visual Studio, do .NET CLI ou diretamente do NuGet Package Manager.
