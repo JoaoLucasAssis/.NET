@@ -89,7 +89,7 @@ O hosting no ASP.NET refere-se ao ambiente e ao processo de execução das aplic
 
 Esse ambiente pode variar dependendo de como e onde a aplicação é implantada.
 
-|||
+|Servidor|Descrição|
 |:---:|:---|
 |Kestrel|É um servidor web multiplataforma embutido no ASP.NET Core. Projetado para ser leve e eficiente, o Kestrel é adequado para ambientes de desenvolvimento e testes|
 |IIS|É um servidor web da Microsoft que pode hospedar aplicações ASP.NET. O IIS fornece recursos avançados, como autenticação, caching e balanceamento de carga|
