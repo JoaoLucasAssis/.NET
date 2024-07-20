@@ -105,7 +105,7 @@ LogLevel:
 
 Para mais detalhes sobre logging no .NET Core e ASP.NET Core, consulte a [documentação oficial da Microsoft]("https://learn.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-6.0").
 
-## O que NuGet?
+## O que é NuGet?
 
 NuGet é o gerenciador de pacotes oficial para a plataforma .NET.
 
@@ -120,3 +120,50 @@ Um pacote NuGet é uma coleção de arquivos que são compilados e empacotados e
 Cada pacote contém metadados que descrevem seu conteúdo, dependências e outros detalhes importantes.
 
 A instalação de pacotes pode ser feita através do Visual Studio, do .NET CLI ou diretamente do NuGet Package Manager.
+
+## O Que é Middleware?
+
+Middleware é um componente de software que processa solicitações em uma aplicação web ASP.NET Core.
+
+Cada solicitação passa por uma série de middlewares antes de alcançar o endpoint final (como um controlador ou uma página Razor) que gera a resposta.
+
+Após o endpoint processar a solicitação, a resposta passa de volta pelos middlewares na ordem inversa, permitindo que eles modifiquem a resposta antes que ela seja enviada ao cliente.
+
+Muitos middlewares são fornecidos por bibliotecas e pacotes externos que você adiciona ao seu projeto.
+
+### Como funciona?
+
+O pipeline de middlewares é configurado no servidor, no arquivo `Program.cs`, antes que qualquer solicitação seja processada.
+
+A ordem dos middlewares no pipeline é definida pelo desenvolvedor durante essa configuração.
+
+```c#
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+// Middleware Pipeline
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseStaticFiles();
+
+app.Run();
+```
+
+> Obs: Para entender na prática, abra e rode o projeto na pasta "\TemplateMiddleware"
+
+Cada middleware depende da sequência em que é executado, ou seja, a ordem dos middlewares no pipeline importa.
+
+Cada middleware tem a capacidade de:
+
+- Executar alguma lógica na solicitação (autenticação, roteamento ou logging).
+- Invocar o próximo middleware no pipeline.
+- Executar alguma lógica na resposta (adicionar cabeçalhos ou modificar o conteúdo da resposta).
+
+### Porque importa?
+
+Permitem uma arquitetura modular onde diferentes responsabilidades são encapsuladas em componentes separados.
+
+Podem ser reutilizados em diferentes aplicações.
+
+Oferecem uma maneira flexível de adicionar ou remover funcionalidades da aplicação.
