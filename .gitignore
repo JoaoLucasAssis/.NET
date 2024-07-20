@@ -9,6 +9,9 @@ obj/
 *.userosscache
 *.sln.docstates
 
+# Diretórios e Arquivos do Visual Studio Code
+.vscode/
+
 # Arquivos Temporários e de Sistema
 *.tmp
 *.log
@@ -33,3 +36,46 @@ docker-compose.yml
 # Node.js
 node_modules/
 bower_components/
+
+# Arquivos de Dependência e Configuração
+*.csproj.user
+*.csproj.dir
+*.csproj.vspscc
+*.dbmdl
+*.suo
+*.vssscc
+
+# Arquivos de Cache
+*.cache
+*.d
+*.pdb
+
+# Testes
+coverage/
+*.testresults
+*.coverage
+
+# Build de Front-end
+public/
+dist/
+
+# Arquivos de Imagem
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.ico
+
+# Documentação Gerada
+docs/
+*.pdf
+*.docx
+*.doc
+
+# Logs e Relatórios
+logs/
+reports/
+
+# Arquivos de Editor
+*.sublime-workspace
+*.sublime-project
