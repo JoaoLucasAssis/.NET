@@ -77,12 +77,30 @@ Ele processa solicitações através de um pipeline de middleware definido na ap
 
 O pipeline pode incluir middleware para autenticação, roteamento, manipulação de erros e muito mais.
 
-Para ambientes de produção, é recomendável usar Kestrel atrás de um proxy reverso, para adicionar camadas adicionais de segurança e funcionalidade.
-
 ### Funcionamento em Ambientes de Produção
+
+Para ambientes de produção, é recomendável usar Kestrel atrás de um proxy reverso, para adicionar camadas adicionais de segurança e funcionalidade.
 
 Quando o servidor recebe uma solicitação do cliente, ela é enviada através de um pipeline de middleware para o Kestrel.
 
 Após o processamento, a solicitação é roteada para o controlador ou página apropriada, que executa a lógica necessária e gera a resposta.
 
 Esta resposta é então enviada de volta ao cliente através do Kestrel.
+
+## Como funciona Logging e LogLevel?
+
+ASP.NET Core fornece uma infraestrutura de logging integrada que permite registrar informações em diferentes níveis de detalhe.
+
+Pode ser configurado no arquivo `appsettings.json` ou via código no método ConfigureServices.
+
+LogLevel:
+|Log Level|Descrição|
+|:---:|:---|
+|Trace|Informação mais detalhada e volumosa|
+|Debug|Informação de depuração, menos detalhada que Trace|
+|Information|Informação geral sobre o fluxo da aplicação|
+|Warning|Potenciais problemas ou situações inusitadas|
+|Error|Erros que afetam o funcionamento da aplicação|
+|Critical|Falhas graves que necessitam de atenção imediata|
+
+Para mais detalhes sobre logging no .NET Core e ASP.NET Core, consulte a [documentação oficial da Microsoft]("https://learn.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-6.0").
