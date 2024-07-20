@@ -66,3 +66,23 @@ Os serviços no ASP.NET fornecem a funcionalidade de backend necessária para su
 Identity é um serviço de identificação que atende qualquer aplicação ASP.NET.
 
 Usado para autenticação de usuário, validação de JWT, entre outros.
+
+## O que é Kestrel?
+
+Kestrel é um servidor web multiplataforma e de alto desempenho embutido no .NET Core, usado principalmente com ASP.NET Core.
+
+É ideal para desenvolvimento local e testes devido à sua configuração simples via código.
+
+Ele processa solicitações através de um pipeline de middleware definido na aplicação.
+
+O pipeline pode incluir middleware para autenticação, roteamento, manipulação de erros e muito mais.
+
+Para ambientes de produção, é recomendável usar Kestrel atrás de um proxy reverso, para adicionar camadas adicionais de segurança e funcionalidade.
+
+### Funcionamento em Ambientes de Produção
+
+Quando o servidor recebe uma solicitação do cliente, ela é enviada através de um pipeline de middleware para o Kestrel.
+
+Após o processamento, a solicitação é roteada para o controlador ou página apropriada, que executa a lógica necessária e gera a resposta.
+
+Esta resposta é então enviada de volta ao cliente através do Kestrel.
