@@ -2,15 +2,15 @@
 
 ## Sumário
 
-• [.NET](#net)
-* [Dupla Compilação](#dupla-compilacao)
+* [.NET](#net)
+  * [Dupla Compilação](#dupla-compilacao)
 
-• [ASP.NET](#aspnet)
-* [Hosting](#hosting)
-* [Pipeline](#pipeline)
-* [Middleware](#middleware)
-* [NuGet](#nuget)
-* [Logging](#logging-e-loglevel)
+* [ASP.NET](#aspnet)
+  * [Hosting](#hosting)
+  * [Pipeline](#pipeline)
+  * [Middleware](#middleware)
+  * [NuGet](#nuget)
+  * [Logging](#logging-e-loglevel)
 
 # .NET
 
