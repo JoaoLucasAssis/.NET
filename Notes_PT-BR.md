@@ -1,6 +1,18 @@
 # Anotações sobre .NET
 
-# O que é .NET?
+## Sumário
+
+• [.NET](#net)
+* [Dupla Compilação](#dupla-compilacao)
+
+• [ASP.NET](#aspnet)
+* [Hosting](#hosting)
+* [Pipeline](#pipeline)
+* [Middleware](#middleware)
+* [NuGet](#nuget)
+* [Logging](#logging-e-loglevel)
+
+# .NET
 
 .NET é uma plataforma de desenvolvimento criada pela Microsoft que oferece um ambiente para construir e executar diferentes tipos de aplicativos, incluindo:
 
@@ -32,7 +44,7 @@ Quando um aplicativo .NET é executado, o código IL é compilado "Just-In-Time"
 
 Esse processo é realizado pelo Just-In-Time Compiler (JIT Compiler), que faz parte da CLR.
 
-# O que é ASP.NET?
+# ASP.NET
 
 ASP.NET é uma extensão do .NET e é utilizado para construir aplicativos web dinâmicos e serviços web.
 
