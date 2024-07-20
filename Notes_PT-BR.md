@@ -20,9 +20,13 @@ Possui um processo de dupla compilação, que permite que os aplicativos desenvo
 
 O compilador converte o código de uma linguagem de programação suportada pelo .NET para uma forma intermediária (IL).
 
+### IL (Intermediate Language)
+
 IL é uma linguagem de baixo nível que não é específica de nenhum sistema operacional ou hardware. 
 
 Isso significa que o código IL pode ser executado em qualquer ambiente que tenha uma implementação da Common Language Runtime (CLR).
+
+### CLR (Common Language Runtime)
 
 Quando um aplicativo .NET é executado, o código IL é compilado "Just-In-Time" (JIT) para o código de máquina nativo específico do sistema operacional e do hardware.
 
@@ -67,6 +71,22 @@ Identity é um serviço de identificação que atende qualquer aplicação ASP.N
 
 Usado para autenticação de usuário, validação de JWT, entre outros.
 
+## Hosting
+
+O hosting no ASP.NET refere-se ao ambiente e ao processo de execução das aplicações ASP.NET.
+
+Esse ambiente pode variar dependendo de como e onde a aplicação é implantada.
+
+|||
+|:---:|:---|
+|Kestrel|É um servidor web multiplataforma embutido no ASP.NET Core. Projetado para ser leve e eficiente, o Kestrel é adequado para ambientes de desenvolvimento e testes|
+|IIS|É um servidor web da Microsoft que pode hospedar aplicações ASP.NET. O IIS fornece recursos avançados, como autenticação, caching e balanceamento de carga|
+|Nginx e Apache|Em ambientes Linux, servidores web como Nginx e Apache podem atuar como proxies reversos que direcionam o tráfego para o Kestrel|
+
+<details>
+<summary>Clique aqui para saber mais sobre o Kestrel.</summary>
+<p>
+
 ## O que é Kestrel?
 
 Kestrel é um servidor web multiplataforma e de alto desempenho embutido no .NET Core, usado principalmente com ASP.NET Core.
@@ -87,41 +107,24 @@ Após o processamento, a solicitação é roteada para o controlador ou página 
 
 Esta resposta é então enviada de volta ao cliente através do Kestrel.
 
-## Como funciona Logging e LogLevel?
+</p>
+</details>
 
-ASP.NET Core fornece uma infraestrutura de logging integrada que permite registrar informações em diferentes níveis de detalhe.
+## Pipeline
 
-Pode ser configurado no arquivo `appsettings.json` ou via código no método ConfigureServices.
+O pipeline do ASP.NET refere-se ao conjunto de middlewares que processam as solicitações.
 
-LogLevel:
-|Log Level|Descrição|
-|:---:|:---|
-|Trace|Informação mais detalhada e volumosa|
-|Debug|Informação de depuração, menos detalhada que Trace|
-|Information|Informação geral sobre o fluxo da aplicação|
-|Warning|Potenciais problemas ou situações inusitadas|
-|Error|Erros que afetam o funcionamento da aplicação|
-|Critical|Falhas graves que necessitam de atenção imediata|
+É uma cadeia de componentes que processam a solicitação antes de chegar ao controlador.
 
-Para mais detalhes sobre logging no .NET Core e ASP.NET Core, consulte a [documentação oficial da Microsoft]("https://learn.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-6.0").
+Cada middleware é responsável por uma parte específica do processamento da solicitação, desde o roteamento até a resposta.
 
-## O que é NuGet?
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 
-NuGet é o gerenciador de pacotes oficial para a plataforma .NET.
-
-Ele simplifica o processo de adicionar, atualizar e remover bibliotecas e ferramentas.
-
-Permite aos desenvolvedores compartilhar código de maneira eficiente e gerenciar as dependências do projeto.
-
-### Pacotes NuGet
-
-Um pacote NuGet é uma coleção de arquivos que são compilados e empacotados em um único arquivo com extensão `.nupkg`.
-
-Cada pacote contém metadados que descrevem seu conteúdo, dependências e outros detalhes importantes.
-
-A instalação de pacotes pode ser feita através do Visual Studio, do .NET CLI ou diretamente do NuGet Package Manager.
-
-## O Que é Middleware?
+## Middleware
 
 Middleware é um componente de software que processa solicitações em uma aplicação web ASP.NET Core.
 
@@ -167,3 +170,36 @@ Permitem uma arquitetura modular onde diferentes responsabilidades são encapsul
 Podem ser reutilizados em diferentes aplicações.
 
 Oferecem uma maneira flexível de adicionar ou remover funcionalidades da aplicação.
+
+## NuGet
+
+NuGet é o gerenciador de pacotes oficial para a plataforma .NET.
+
+Ele simplifica o processo de adicionar, atualizar e remover bibliotecas e ferramentas.
+
+Permite aos desenvolvedores compartilhar código de maneira eficiente e gerenciar as dependências do projeto.
+
+### Pacotes NuGet
+
+Um pacote NuGet é uma coleção de arquivos que são compilados e empacotados em um único arquivo com extensão `.nupkg`.
+
+Cada pacote contém metadados que descrevem seu conteúdo, dependências e outros detalhes importantes.
+
+A instalação de pacotes pode ser feita através do Visual Studio, do .NET CLI ou diretamente do NuGet Package Manager.
+
+## Logging e LogLevel
+
+ASP.NET Core fornece uma infraestrutura de logging integrada que permite registrar informações em diferentes níveis de detalhe.
+
+Pode ser configurado no arquivo `appsettings.json` ou via código no método ConfigureServices.
+
+|Log Level|Descrição|
+|:---:|:---|
+|Trace|Informação mais detalhada e volumosa|
+|Debug|Informação de depuração, menos detalhada que Trace|
+|Information|Informação geral sobre o fluxo da aplicação|
+|Warning|Potenciais problemas ou situações inusitadas|
+|Error|Erros que afetam o funcionamento da aplicação|
+|Critical|Falhas graves que necessitam de atenção imediata|
+
+Para mais detalhes sobre logging no .NET Core e ASP.NET Core, consulte a [documentação oficial da Microsoft]("https://learn.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-6.0").
