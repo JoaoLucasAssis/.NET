@@ -118,12 +118,6 @@ O pipeline do ASP.NET refere-se ao conjunto de middlewares que processam as soli
 
 Cada middleware é responsável por uma parte específica do processamento da solicitação, desde o roteamento até a resposta.
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseRouting();
-app.UseAuthentication();
-app.UseAuthorization();
-
 ## Middleware
 
 Middleware é um componente de software que processa solicitações em uma aplicação web ASP.NET Core.
