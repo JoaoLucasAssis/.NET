@@ -208,4 +208,14 @@ Pode ser configurado no arquivo `appsettings.json` ou via código no método Con
 |Error|Erros que afetam o funcionamento da aplicação|
 |Critical|Falhas graves que necessitam de atenção imediata|
 
-Para mais detalhes sobre logging no .NET Core e ASP.NET Core, consulte a [documentação oficial da Microsoft]("https://learn.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-6.0").
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  }
+}
+
+```
