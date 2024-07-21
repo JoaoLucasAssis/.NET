@@ -89,6 +89,14 @@ O hosting no ASP.NET refere-se ao ambiente e ao processo de execução das aplic
 
 Esse ambiente pode variar dependendo de como e onde a aplicação é implantada.
 
+### In Process Hosting
+
+<img src="https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/iis/index/_static/ancm-inprocess.png?view=aspnetcore-8.0" alt="imagem" width="650px" height="100px"/>
+
+### Out Process Hosting
+
+<img src="https://learn.microsoft.com/pt-br/aspnet/core/host-and-deploy/iis/index/_static/ancm-outofprocess.png?view=aspnetcore-8.0" alt="imagem" width="650px" height="100px"/>
+
 |Servidor|Descrição|
 |:---:|:---|
 |Kestrel|É um servidor web multiplataforma embutido no ASP.NET Core. Projetado para ser leve e eficiente, o Kestrel é adequado para ambientes de desenvolvimento e testes|
@@ -130,6 +138,8 @@ O pipeline do ASP.NET refere-se ao conjunto de middlewares que processam as soli
 
 Cada middleware é responsável por uma parte específica do processamento da solicitação, desde o roteamento até a resposta.
 
+<img src="https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/index/_static/middleware-pipeline.svg?view=aspnetcore-8.0" alt="imagem" width="650px" height="400px"/>
+
 ## Middleware
 
 Middleware é um componente de software que processa solicitações em uma aplicação web ASP.NET Core.
@@ -159,7 +169,7 @@ app.UseStaticFiles();
 app.Run();
 ```
 
-> Obs: Para entender na prática, abra e rode o projeto na pasta "\TemplateMiddleware"
+> Obs: Para entender na prática, abra e rode o projeto na pasta "\Templates\Middleware"
 
 Cada middleware depende da sequência em que é executado, ou seja, a ordem dos middlewares no pipeline importa.
 
