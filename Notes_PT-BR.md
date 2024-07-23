@@ -4,6 +4,7 @@
 
 * [.NET](#net)
   * [Dupla Compilação](#dupla-compilacao)
+  * [Entity Framework](#entity-framework)
 
 * [ASP.NET](#aspnet)
   * [Hosting](#hosting)
@@ -43,6 +44,66 @@ Isso significa que o código IL pode ser executado em qualquer ambiente que tenh
 Quando um aplicativo .NET é executado, o código IL é compilado "Just-In-Time" (JIT) para o código de máquina nativo específico do sistema operacional e do hardware.
 
 Esse processo é realizado pelo Just-In-Time Compiler (JIT Compiler), que faz parte da CLR.
+
+## Entity Framework
+
+Entity Framework é um Object-Relational Mapping (ORM) framework para .NET.
+
+Permite que desenvolvedores trabalhem com um banco de dados usando objetos .NET.
+
+Elimina a necessidade de escrever grande parte do código SQL manualmente.
+
+Permite escrever consultas utilizando LINQ (Language Integrated Query), proporcionando uma forma intuitiva e tipada de acessar dados.
+
+### Modelagem de Dados
+
+Permite definir um modelo de dados usando classes .NET.
+
+Cada classe corresponde a uma tabela no banco de dados e cada propriedade da classe a uma coluna na tabela.
+
+### Mecanismos de Modelagem
+
+|Mecanismos|Descrição|
+|:---:|:---|
+|Code-First|O banco de dados é gerado através de classes C# ou VB.NET|
+|Database-First|As classes são definidas a partir de um banco de dados existente|
+|Model-First|O modelo de dados é criado usando o Entity Framework Designer|
+
+### DbContext
+
+DbContext é uma classe central no Entity Framework essencial para a comunicação entre a aplicação e o banco de dados.
+
+Ele gerencia a conexão com o banco de dados e fornece uma abstração para o acesso aos dados.
+
+Essa classe é responsável por algumas outras funções, sendo elas:
+
+- Configurar o modelo de dados
+- Consultar e persistir dados em seu banco
+- Fazer toda a rastreabilidade do objeto
+- Materializar resultados das consultas
+- Cache de primeiro nível
+
+|Métodos|Descrição|
+|:---:|:---|
+|OnConfiguring|Esse método é usado para configurar o banco de dados que o contexto usará|
+|SaveChanges|Esse métodos é usado para persistir todas as alterações feitas no contexto para o banco de dados|
+
+### Migrações
+
+Migrações são uma ferramenta que ajudam a gerenciar mudanças no esquema do banco de dados ao longo do tempo.
+
+Migrações são essencialmente um histórico de alterações do esquema do banco de dados.
+
+|Tipo|Comandos|Console|Descrição|
+|:---:|:---|:---:|:---|
+|Criação|Add-Migration|Gerenciador de Pacotes|Esses comandos geram um arquivo de migração que contém o código necessário para aplicar a mudança no banco de dados|
+||dotnet ef migrations add|CLI do .NET|Esses comandos geram um arquivo de migração que contém o código necessário para aplicar a mudança no banco de dados|
+|Aplicação|Update-Database|Gerenciador de Pacotes|Esses comandos aplicam todas as migrações pendentes ao banco de dados|
+||dotnet ef database update|CLI do .NET|Esses comandos aplicam todas as migrações pendentes ao banco de dados|
+|Rollback|dotnet ef migrations remove|CLI do .NET|Este comando reverte a última migração aplicada, retornando o banco de dados ao estado anterior|
+||dotnet ef database update <NomeDaMigracaoAnterior>|CLI do .NET|Se você precisar reverter para uma migração específica|
+|Geração de Scripts|dotnet ef migrations script -o MigrationScript.sql|CLI do .NET|Esse comando gera um script SQL a partir de migrações para aplicar manualmente no banco de dados|
+|Scripts Idempotentes|dotnet ef migrations script --idempotent -o MigrationScript.sql|CLI do .NET|Esse comando gera um script que garante que todas as alterações necessárias sejam executadas apenas uma vez|
 
 # ASP.NET
 
