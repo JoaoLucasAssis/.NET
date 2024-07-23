@@ -25,7 +25,6 @@ Thumbs.db
 *.snupkg
 
 # Arquivos de Configuração
-appsettings*.json
 secrets.json
 
 # Docker
