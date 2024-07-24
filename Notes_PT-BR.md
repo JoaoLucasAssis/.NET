@@ -528,3 +528,30 @@ app.UseEndpoints(endpoints =>
     // procurar um controlador chamado Home e uma ação chamada Index
 };
 ```
+
+### Atributos
+
+Os atributos de rota permitem definir regras de roteamento diretamente nos controladores e ações por meio de anotações.
+
+Isso proporciona maior controle e flexibilidade ao roteamento, permitindo especificar rotas diretamente na definição de uma classe ou método.
+
+```c#
+[Route("/"), Order = 0] // Defines the default route for ProductsController, which automatically calls the Index() method
+[Route("products"), Order = 1] // Defines that all actions in the ProductsController will be under the /products base URL
+public class ProductsController : Controller
+{
+    // Defines that the action method should be called when the server receives an HTTP GET request for the /list URL
+    [HttpGet("list")]
+    public IActionResult List()
+    {
+        return View();
+    }
+
+    // Defines that the action method should be called when the server receives an HTTP POST request for the /details/id URL
+    [HttpPost("details/{id}")]
+    public IActionResult Details(int id)
+    {
+	// logic
+    }
+}
+```
