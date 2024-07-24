@@ -428,3 +428,13 @@ O padrão MVC (Model-View-Controller) é um padrão de arquitetura de software q
 |Model|É a representação dos dados do mundo real que pode incluir validações de estado e regras de negócio|
 |View|São as páginas do site, responsáveis pela navegação, design, UX|
 |Controller|Intermediária entre a Model e a View. Invoca o método correto que irá processar e retornar os dados, para serem enviados para View|
+
+## DTO
+
+Um Data Transfer Object (DTO) é um padrão de design usado para transferir dados entre diferentes camadas de uma aplicação.
+
+São usados para transportar dados entre a camada de apresentação (Views) e a camada de negócios (Controllers e Models) ou entre serviços web e clientes.
+
+Ao limitar a quantidade de dados transferidos, eles ajudam a reduzir a sobrecarga de rede e melhorar o desempenho.
+
+DTOs podem simplificar a estrutura de dados exposta às Views, oferecendo apenas as informações necessárias.
