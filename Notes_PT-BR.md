@@ -507,3 +507,24 @@ Permitem aos desenvolvedores controlar a saída de um método de ação de forma
 |FileResult|Retorna um arquivo para download ou visualização|return File("path/to/file", "mime/type");|
 |EmptyResult|Retorna uma resposta HTTP vazia, sem conteúdo|return new EmptyResult();|
 |StatusCodeResult|Retorna um código de status HTTP específico, como 404 ou 500|return StatusCode(404);|
+
+## Roteamento
+
+O roteamento no ASP.NET MVC funciona como um mapeamento entre a URL solicitada e o código que a processa, que geralmente é um controller.
+
+As rotas são configuradas na aplicação normalmente no arquivo `Program.cs`.
+
+```c#
+app.UseRouting();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}"
+    );
+
+    // Neste exemplo, a rota padrão especifica que a aplicação deverá 
+    // procurar um controlador chamado Home e uma ação chamada Index
+};
+```
