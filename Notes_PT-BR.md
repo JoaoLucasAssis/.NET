@@ -4,6 +4,7 @@
 
 * [.NET](#net)
   * [Dupla Compilação](#dupla-compilacao)
+  * [Garbage Collector](#garbage-collector)
   * [Entity Framework](#entity-framework)
 
 * [ASP.NET](#aspnet)
@@ -44,6 +45,22 @@ Isso significa que o código IL pode ser executado em qualquer ambiente que tenh
 Quando um aplicativo .NET é executado, o código IL é compilado "Just-In-Time" (JIT) para o código de máquina nativo específico do sistema operacional e do hardware.
 
 Esse processo é realizado pelo Just-In-Time Compiler (JIT Compiler), que faz parte da CLR.
+
+## Garbage Collector
+
+O Garbage Collector é um componente crucial do Common Language Runtime (CLR) que gerencia automaticamente a alocação e liberação de memória para aplicações .NET.
+
+Ele ajuda a evitar problemas de memória, como vazamentos, ao identificar e liberar objetos que não são mais acessíveis no programa.
+
+O .NET utiliza um heap gerenciado, dividido em três gerações para otimizar a coleta de lixo.
+
+|Geração|Descrição|
+|:---:|---|
+|0|Onde novos objetos são alocados. Coletas são frequentes e rápidas|
+|1|Área intermediária para objetos que sobrevivem à coleta na Geração 0|
+|2|Para objetos de longa duração, onde as coletas são menos frequentes|
+
+A coleta de Lixo envolve identificar objetos inacessíveis, compactar o heap para eliminar a fragmentação e liberar memória dos objetos mortos.
 
 ## Entity Framework
 
@@ -121,21 +138,83 @@ internal class AppDbContext : DbContext
 }
 
 internal class OrderConfiguration : IEntityTypeConfiguration<Order>
+{
+    public void Configure(EntityTypeBuilder<Order> builder)
     {
-        public void Configure(EntityTypeBuilder<Order> builder)
-        {
-            builder.ToTable("Orders");
-            builder.HasKey(e => e.Id);
-            builder.Property(e => e.StartDate).HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd();
-            builder.Property(e => e.Status).HasConversion<string>();
-            builder.Property(e => e.Observation).HasColumnType("VARCHAR(512)");
+        builder.ToTable("Orders");
+        builder.HasKey(e => e.Id);
+        builder.Property(e => e.StartDate).HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd();
+        builder.Property(e => e.Status).HasConversion<string>();
+        builder.Property(e => e.Observation).HasColumnType("VARCHAR(512)");
 
-            builder.HasMany(e => e.Items).WithOne(e => e.Order).OnDelete(DeleteBehavior.Cascade);
-        }
+        builder.HasMany(e => e.Items).WithOne(e => e.Order).OnDelete(DeleteBehavior.Cascade);
     }
+}
 ```
 </details>
 
+### Configuração do Modelo de Dados
+
+A configuração dos modelos de dados pode ser feita usando duas abordagens principais: Fluent API e Data Annotations.
+
+#### Fluent API
+
+Fluent API é uma abordagem que permite configurar os modelos de dados usando uma API fluente no método `OnModelCreating` do seu `DbContext`. 
+
+Essa abordagem é especialmente útil para configurações mais complexas e detalhadas.
+
+```c#
+internal class AppDbContext : DbContext
+{   
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfiguration(new OrderConfiguration());
+    }
+}
+
+internal class OrderConfiguration : IEntityTypeConfiguration<Order>
+{
+    public void Configure(EntityTypeBuilder<Order> builder)
+    {
+        builder.ToTable("Orders");
+        builder.HasKey(e => e.Id);
+        builder.Property(e => e.StartDate).HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd();
+        builder.Property(e => e.Status).HasConversion<string>();
+        builder.Property(e => e.Observation).HasColumnType("VARCHAR(512)");
+
+        builder.HasMany(e => e.Items).WithOne(e => e.Order).OnDelete(DeleteBehavior.Cascade);
+    }
+}
+```
+
+#### Data Annotations
+
+Data Annotations são atributos que você pode adicionar diretamente às propriedades e classes do modelo para configurar o mapeamento de dados.
+
+Ideal para configurações que podem ser facilmente expressas através de atributos.
+
+```c#
+internal class Order
+{
+    [Key]
+    public int Id { get; set; }
+
+    [Column(TypeName = "VARCHAR(512)")]
+    public string Observation { get; set; }
+
+    [DefaultValueSql("GETDATE()")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public DateTime StartDate { get; set; }
+
+    [NotMapped]
+    public DateTime EndDate { get; set; }
+
+    [Column(TypeName = "VARCHAR(20)")]
+    public string Status { get; set; }
+
+    public ICollection<Item> Items { get; set; }
+}
+```
 
 ### Migrações
 
