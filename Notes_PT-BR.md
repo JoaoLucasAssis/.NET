@@ -431,7 +431,7 @@ Pode ser configurado no arquivo `appsettings.json` ou via código no método Con
 
 O padrão MVC (Model-View-Controller) é um padrão de arquitetura de software que separa uma aplicação em três componentes principais: Model, View e Controller.
 
-|||
+|Componentes|Descrição|
 |:---:|:---|
 |Model|É a representação dos dados do mundo real que pode incluir validações de estado e regras de negócio|
 |View|São as páginas do site, responsáveis pela navegação, design, UX|
