@@ -488,3 +488,22 @@ public class ProductsController : Controller
 ```
 
 O framework procura uma view cujo nome corresponda ao nome do método de ação, permitindo que os desenvolvedores evitem a necessidade de especificar explicitamente o nome da view a ser retornada.
+
+## Action Results
+
+Os Action Results são componentes que determinam como uma resposta é retornada ao cliente após a execução de um método de ação em um controller.
+
+Um Action Result é um objeto que implementa a interface IActionResult.
+
+Permitem aos desenvolvedores controlar a saída de um método de ação de forma flexível e poderosa.
+
+|Action Result|Descrição|Exemplo|
+|:---:|:---|:---|
+|ViewResult|Renderiza uma view HTML para o cliente|return View();|
+|JsonResult|Retorna dados JSON, ideal para APIs RESTful|return Json(data);|
+|RedirectResult|Redireciona o cliente para outra URL|return Redirect("http://example.com");|
+|RedirectToActionResult|Redireciona para outra ação do controlador|return RedirectToAction("ActionName", "ControllerName");|
+|ContentResult|Retorna texto simples como resposta HTTP|return Content("Hello World!");|
+|FileResult|Retorna um arquivo para download ou visualização|return File("path/to/file", "mime/type");|
+|EmptyResult|Retorna uma resposta HTTP vazia, sem conteúdo|return new EmptyResult();|
+|StatusCodeResult|Retorna um código de status HTTP específico, como 404 ou 500|return StatusCode(404);|
