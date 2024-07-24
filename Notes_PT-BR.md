@@ -625,7 +625,7 @@ public class AlertViewComponent : ViewComponent
 }
 ```
 
-O arquivo Default.cshtml:
+O arquivo `Default.cshtml`:
 
 ```html
 <div class="alert alert-info">
