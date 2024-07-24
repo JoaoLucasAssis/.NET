@@ -609,7 +609,7 @@ Todos os View Components devem ficar localizados na pasta /ViewComponent.
 
 > :warning: Para usar View Component deve-se adicionar a linha:
 >
-> @addTagHelper "*, namespace"
+> @addTagHelper "*, your-namespace"
 >
 > A linha deve ser adicionada no arquivo _ViewImports.cshtml
 
