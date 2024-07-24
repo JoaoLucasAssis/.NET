@@ -15,12 +15,18 @@
   * [Logging](#logging-e-loglevel)
   
 * [MVC](#mvc)
-  * [DTO](#dto)
-  * [Data Annotations](#data-annotations-1)
-  * [Convenções](#convenções)
-  * [Action Results](#action-results)
-  * [Roteamento](#roteamento)
-  * [Parâmetros](#parâmetros)
+  * Model
+    * [DTO](#dto)
+    * [Data Annotations](#data-annotations-1)
+  * View
+    * [Razor](#razor)
+    * [Partial Views](#partial-views)
+    * [View Components](#view-components)
+  * Controller
+    * [Convenções](#convenções)
+    * [Action Results](#action-results)
+    * [Roteamento](#roteamento)
+    * [Parâmetros](#parâmetros)
 
 # .NET
 
@@ -475,6 +481,163 @@ internal class Order
 
     public ICollection<Item> Items { get; set; }
 }
+```
+
+## Razor
+
+**Razor Views** são arquivos HTML mesclados com recursos do Razor.
+
+Transforma as views em arquivos HTML puros para a interpretação do browser.
+
+### Razor Syntax
+
+Razor Syntax é a linguagem usada em Razor Views, que permite a combinação de C# e HTML.
+
+Tem uma sintaxe minimalista que facilita a leitura e escrita de código.
+
+Ele usa '@' para transitar entre HTML e C#.
+
+```html
+// Specifies the model that will be used to the view.
+@model MyApp.Models.Product
+
+// Access the properties and methods of the model specified by @model
+<h2>@Model.Name</h2>
+<p>Price: @Model.Price.ToString("C")</p>
+```
+
+### TagHelpers
+
+TagHelpers são uma funcionalidade que permite a criação de tags HTML personalizadas com funcionalidades adicionais.
+
+Maneira mais rica e intuitiva de integrar lógica de servidor diretamente no HTML.
+
+```html
+<form asp-controller="Account" asp-action="Login">
+    <label asp-for="Username"></label>
+    <input asp-for="Username" />
+    
+    <label asp-for="Password"></label>
+    <input asp-for="Password" type="password" />
+
+    <button type="submit">Login</button>
+</form>
+
+```
+
+|TagHelper|Descrição|
+|:---:|:---|
+|asp-controller|É usado para gerar URLs ou definir ações em formulários que apontam para um controller específico|
+|asp-action|É usado com asp-controller para especificar o método exato dentro do controller|
+|asp-for|É usado em formulários para vincular campos de entrada às propriedades do modelo|
+
+## Partial Views
+
+Partial Views são subcomponentes das views principais.
+
+Dependem do modelo implementado na view principal.
+
+São muito utilizadas para renderizar parte de uma view através de requisições AJAX.
+
+De acordo com a convenção de nomenclatura em ASP.NET MVC, as partial views geralmente devem começar com um sublinhado '_'.
+
+```html
+// Uses a taghelper to call a partial view within the _Layout.cshtml
+<partial name="_NavBar" />
+```
+
+### _ViewStart
+
+`_ViewStart.cshtml` é um arquivo no ASP.NET MVC que define o layout padrão para todas as views dentro de uma pasta e suas subpastas.
+
+o arquivo está localizado na raiz do diretório na pasta /Views.
+
+```c#
+@{
+    // Defines that all views use the _Layout.cshtml layout
+    Layout = "_Layout";
+}
+```
+
+### _ViewImports
+
+`_ViewImports.cshtml` é um arquivo no ASP.NET MVC que é utilizado para importar namespaces e configurar diretivas comuns que todas as views devem usar.
+
+```c#
+@using MyMvcApp.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+```
+
+### _Layout
+
+`_Layout.cshtml` é o arquivo que define o layout principal da aplicação.
+
+Define a estrutura geral da interface do usuário que será compartilhada por várias views.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - My ASP.NET MVC Application</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <partial name="_NavBar" />
+    </header>
+    <main role="main">
+        // The specific content of each view will be rendered here
+        @RenderBody()
+    </main>
+    <footer>
+        @await Component.InvokeAsync("Alert", new { message = "Policity Privacy © 2024" })
+    </footer>
+</body>
+</html>
+```
+
+## View Components
+
+View Components são componentes independentes das views.
+
+Podem realizar ações como obter dados de uma tabela e exibir valores manipulados.
+
+É uma excelente funcionalidade para componentizar recursos a página.
+
+Todos os View Components devem ficar localizados na pasta /ViewComponent.
+
+> :warning: Para usar View Component deve-se adicionar a linha:
+>
+> @addTagHelper "*, namespace"
+>
+> A linha deve ser adicionada no arquivo _ViewImports.cshtml
+
+```c#
+// All components must implement the ViewComponent class and have the InvokeAsync action
+public class AlertViewComponent : ViewComponent
+{
+    public Task<IViewComponentResult> InvokeAsync(string message)
+    {
+        // Will return the view located in the path /Views/Shared/Components/Alert/Default.cshtml
+        return View(message);
+    }
+}
+```
+
+O arquivo Default.cshtml:
+
+```html
+<div class="alert alert-info">
+    @Model
+</div>
+```
+
+As duas formas abaixo são válidas para chamar um View Component em uma Razor View:
+
+```html
+@await Component.InvokeAsync("Alert", new { message = "Policity Privacy © 2024" })
+<vc:alert />
 ```
 
 ## Convenções
