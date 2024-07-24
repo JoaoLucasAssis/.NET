@@ -438,3 +438,33 @@ São usados para transportar dados entre a camada de apresentação (Views) e a 
 Ao limitar a quantidade de dados transferidos, eles ajudam a reduzir a sobrecarga de rede e melhorar o desempenho.
 
 DTOs podem simplificar a estrutura de dados exposta às Views, oferecendo apenas as informações necessárias.
+
+## Data Annotations
+
+Data Annotations são atributos que você pode aplicar às classes e propriedades do modelo para definir regras de validação e comportamento de formatação.
+
+Fornecem uma maneira simples de adicionar validação ao modelo, que é automaticamente respeitada pelas Views e pelo framework MVC.
+
+```c#
+internal class Order
+{
+    [Key]
+    public int Id { get; set; }
+
+    [Required(ErrorMessage = "O {0} é obrigatório.")]
+    [StringLength(100, MinimumLength = 3, ErrorMessage = "O nome {0} deve ter entre {2} e {1} caracteres.")]
+    public string Observation { get; set; }
+
+    [DataType(DataType.Date)]
+    [Display(Name = "Data do Pedido")]
+    public DateTime StartDate { get; set; }
+
+    [Display(Name = "Data Final do Pedido")]
+    public DateTime EndDate { get; set; }
+
+    [Required(ErrorMessage = "O {0} é obrigatório.")]
+    public string Status { get; set; }
+
+    public ICollection<Item> Items { get; set; }
+}
+```
