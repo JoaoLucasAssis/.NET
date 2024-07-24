@@ -468,3 +468,23 @@ internal class Order
     public ICollection<Item> Items { get; set; }
 }
 ```
+
+## Convenções
+
+No ASP.NET MVC, uma das principais convenções que facilita o desenvolvimento é a associação automática entre o nome dos métodos de ação nos controllers e as views correspondentes.
+
+As views são organizadas em pastas que correspondem aos nomes dos controllers. Para o ProductsController, as views estariam na pasta Views/Products.
+
+```c#
+public class ProductsController : Controller
+{
+    // Returns a ViewResult action
+    public IActionResult Index()
+    {
+        // Returns the page Views/Products/Index.cshtml
+        return View();
+    }
+}
+```
+
+O framework procura uma view cujo nome corresponda ao nome do método de ação, permitindo que os desenvolvedores evitem a necessidade de especificar explicitamente o nome da view a ser retornada.
