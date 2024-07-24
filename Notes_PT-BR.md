@@ -555,3 +555,70 @@ public class ProductsController : Controller
     }
 }
 ```
+
+## Parâmetros
+
+Passagem de parâmetros refere-se à capacidade de fornecer dados para um método de ação no controller a partir de uma solicitação HTTP.
+
+Esses parâmetros podem ser extraídos de diferentes partes da solicitação, como a URL, parâmetros de consulta, corpo da solicitação, ou cabeçalhos.
+
+### Model Binding
+
+O ASP.NET MVC usa um processo chamado model binding para mapear os valores das partes da solicitação para os parâmetros dos métodos de ação.
+
+Extrai dados de várias fontes e os converte em tipos de dados apropriados para os parâmetros dos métodos do controlador.
+
+Para parâmetros simples, o ASP.NET MVC automaticamente associa os valores passados na URL ou no corpo da solicitação aos parâmetros do método.
+
+```c#
+public ActionResult Details(int id)
+{
+    // 'id' is automatically filled with the URL value.
+}
+```
+
+Quando você passa um objeto complexo como um parâmetro, o model binding associa os valores dos campos do formulário às propriedades do objeto.
+
+```c#
+public ActionResult Create(ICollection collection)
+{
+    // 'collection' is filled with the form data.
+}
+```
+
+#### Atributos
+
+Atributos como `FromForm`, `FromQuery` e `FromBody` podem ser usados para especificar explicitamente a origem dos dados para parâmetros de métodos.
+
+```c#
+public ActionResult Create([FromForm] ICollection collection)
+{
+    // 'collection' is extracted from the form body.
+}
+```
+
+O `Bind` é usado para especificar quais propriedades de um modelo devem ser incluídas ou excluídas.
+
+```c#
+public ActionResult Create([Bind("Name, Email")] ICollection collection)
+{
+    // 'collection' is extracted from the form body.
+}
+```
+
+### Múltiplos Parâmetros
+
+Para passar múltiplos parâmetros, adicione-os à URL usando ? para o primeiro parâmetro e & para os subsequentes.
+
+O nome dos parâmetros na URL deve corresponder exatamente aos nomes dos parâmetros do método de ação. 
+
+Isso garante que o model binding funcione corretamente e os valores sejam atribuídos aos parâmetros certos.
+
+```c#
+public IActionResult Search(string query, int page, int index)
+{
+    // query, page and index are extracted from the URL
+    // http://example.com/controller/search?query=ASP.NET&page=2&index=1
+    // logic
+}
+```
