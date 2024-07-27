@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "secrets1": {
+      "type": "secrets"
+    },
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:Server=(localdb)::mssqllocaldb;Database=TemplateEF;Trusted_Connection=True;",
+      "dynamicId": null
+    }
+  }
+}
