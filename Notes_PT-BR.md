@@ -443,6 +443,26 @@ O padrão MVC (Model-View-Controller) é um padrão de arquitetura de software q
 |View|São as páginas do site, responsáveis pela navegação, design, UX|
 |Controller|Intermediária entre a Model e a View. Invoca o método correto que irá processar e retornar os dados, para serem enviados para View|
 
+## Criando o projeto utilizando o CLI
+
+Em seu terminal crie uma pasta para a criação do projetos e navegue até esta pasta. Execute o comando a seguir:
+
+```txt
+dotnet new sln -n <your-application-name>
+```
+
+Agora crie uma pasta chamada "src" e navegue até ela. Execute o comando a seguir:
+
+```txt
+dotnet new mvc -n <your-application-name> --auth Individual
+```
+
+Navegue até a pasta AppMvcFuncional e execute o comando para associação da Solution com o projeto:
+
+```txt
+dotnet sln ../../<your-application-name>.sln add <your-application-name>.csproj
+```
+
 ## DTO
 
 Um Data Transfer Object (DTO) é um padrão de design usado para transferir dados entre diferentes camadas de uma aplicação.
