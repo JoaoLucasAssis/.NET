@@ -166,56 +166,6 @@ internal class AppDbContext : DbContext
     </tbody>
 </table>
 
-
-
-<details>
-<summary>Clique aqui para entender na prática!</summary>
-
-```c#
-internal class Order
-{
-    public int Id { get; set; }
-    public int ClientId { get; set; }
-    public Client Client { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
-    public OrderStatus Status { get; set; }
-    public string Observation {  get; set; }
-    public ICollection<Item> Items { get; set; }
-}
-
-internal class AppDbContext : DbContext
-{   
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer("Your-String-Connection-To-SqlServer-Here");
-    }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        // The line below automatically applies all configurations of all classes that 
-        // implement IEntityTypeConfiguration<T> found in the specified assembly.
-
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
-    }
-}
-
-internal class OrderConfiguration : IEntityTypeConfiguration<Order>
-{
-    public void Configure(EntityTypeBuilder<Order> builder)
-    {
-        builder.ToTable("Orders");
-        builder.HasKey(e => e.Id);
-        builder.Property(e => e.StartDate).HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd();
-        builder.Property(e => e.Status).HasConversion<string>();
-        builder.Property(e => e.Observation).HasColumnType("VARCHAR(512)");
-
-        builder.HasMany(e => e.Items).WithOne(e => e.Order).OnDelete(DeleteBehavior.Cascade);
-    }
-}
-```
-</details>
-
 ### Configuração do Modelo de Dados
 
 A configuração dos modelos de dados pode ser feita usando duas abordagens principais: Fluent API e Data Annotations.
