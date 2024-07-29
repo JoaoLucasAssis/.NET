@@ -24,6 +24,7 @@
     * [Razor](#razor)
     * [Partial Views](#partial-views)
     * [View Components](#view-components)
+    * [Estados]("#estados")
   * [Controller](#controller)
     * [Action Results](#action-results)
     * [Roteamento](#roteamento)
@@ -724,6 +725,30 @@ As duas formas abaixo são válidas para chamar um View Component em uma Razor V
 @await Component.InvokeAsync("Alert", new { message = "Policity Privacy © 2024" })
 
 <vc:alert />
+```
+
+### Estados
+
+No contexto do ASP.NET MVC, "estados" referem-se às formas de armazenar e passar dados entre o controller e a view.
+
+Permitem armazenar e transferir informações temporárias durante o ciclo de vida de uma solicitação HTTP.
+
+|Estados|Descrição|
+|:---:|:---|
+|ViewBag|Usado para passar dados do controller para a view durante o processamento da solicitação atual|
+|ViewData|Similar ao ViewBag, utilizado para passar dados do controller para a view|
+|TempData|Usado para armazenar dados que precisam ser persistidos entre solicitações|
+
+No Controller:
+
+```c#
+ViewData["Message"] = "Hello, World!";
+```
+
+Na View:
+
+```html
+<p>@ViewBag.Message</p>
 ```
 
 ## Controller
