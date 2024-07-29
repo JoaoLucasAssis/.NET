@@ -11,6 +11,7 @@
   * [Hosting](#hosting)
   * [Pipeline](#pipeline)
   * [Middleware](#middleware)
+  * [Identity](#identity)
   * [NuGet](#nuget)
   * [Logging](#logging-e-loglevel)
   
@@ -68,11 +69,11 @@ Ele ajuda a evitar problemas de memória, como vazamentos, ao identificar e libe
 
 O .NET utiliza um heap gerenciado, dividido em três gerações para otimizar a coleta de lixo.
 
-|Geração|Descrição|
-|:---:|---|
-|0|Onde novos objetos são alocados. Coletas são frequentes e rápidas|
-|1|Área intermediária para objetos que sobrevivem à coleta na Geração 0|
-|2|Para objetos de longa duração, onde as coletas são menos frequentes|
+| Geração | Descrição                                                            |
+| :-----: | -------------------------------------------------------------------- |
+|    0    | Onde novos objetos são alocados. Coletas são frequentes e rápidas    |
+|    1    | Área intermediária para objetos que sobrevivem à coleta na Geração 0 |
+|    2    | Para objetos de longa duração, onde as coletas são menos frequentes  |
 
 A coleta de Lixo envolve identificar objetos inacessíveis, compactar o heap para eliminar a fragmentação e liberar memória dos objetos mortos.
 
@@ -94,11 +95,11 @@ Cada classe corresponde a uma tabela no banco de dados e cada propriedade da cla
 
 ### Mecanismos de Modelagem
 
-|Mecanismos|Descrição|
-|:---:|:---|
-|Code-First|O banco de dados é gerado através de classes C# ou VB.NET|
-|Database-First|As classes são definidas a partir de um banco de dados existente|
-|Model-First|O modelo de dados é criado usando o Entity Framework Designer|
+|   Mecanismos   | Descrição                                                        |
+| :------------: | :--------------------------------------------------------------- |
+|   Code-First   | O banco de dados é gerado através de classes C# ou VB.NET        |
+| Database-First | As classes são definidas a partir de um banco de dados existente |
+|  Model-First   | O modelo de dados é criado usando o Entity Framework Designer    |
 
 ### DbContext
 
@@ -234,16 +235,16 @@ Migrações são uma ferramenta que ajudam a gerenciar mudanças no esquema do b
 
 Migrações são essencialmente um histórico de alterações do esquema do banco de dados.
 
-|Tipo|Comandos|Console|Descrição|
-|:---:|:---|:---:|:---|
-|Criação|Add-Migration|Gerenciador de Pacotes|Esses comandos geram um arquivo de migração que contém o código necessário para aplicar a mudança no banco de dados|
-||dotnet ef migrations add|CLI do .NET|Esses comandos geram um arquivo de migração que contém o código necessário para aplicar a mudança no banco de dados|
-|Aplicação|Update-Database|Gerenciador de Pacotes|Esses comandos aplicam todas as migrações pendentes ao banco de dados|
-||dotnet ef database update|CLI do .NET|Esses comandos aplicam todas as migrações pendentes ao banco de dados|
-|Rollback|dotnet ef migrations remove|CLI do .NET|Este comando reverte a última migração aplicada, retornando o banco de dados ao estado anterior|
-||dotnet ef database update <NomeDaMigracaoAnterior>|CLI do .NET|Se você precisar reverter para uma migração específica|
-|Geração de Scripts|dotnet ef migrations script -o MigrationScript.sql|CLI do .NET|Esse comando gera um script SQL a partir de migrações para aplicar manualmente no banco de dados|
-|Scripts Idempotentes|dotnet ef migrations script --idempotent -o MigrationScript.sql|CLI do .NET|Esse comando gera um script que garante que todas as alterações necessárias sejam executadas apenas uma vez|
+|         Tipo         | Comandos                                                        |        Console         | Descrição                                                                                                           |
+| :------------------: | :-------------------------------------------------------------- | :--------------------: | :------------------------------------------------------------------------------------------------------------------ |
+|       Criação        | Add-Migration                                                   | Gerenciador de Pacotes | Esses comandos geram um arquivo de migração que contém o código necessário para aplicar a mudança no banco de dados |
+|                      | dotnet ef migrations add                                        |      CLI do .NET       | Esses comandos geram um arquivo de migração que contém o código necessário para aplicar a mudança no banco de dados |
+|      Aplicação       | Update-Database                                                 | Gerenciador de Pacotes | Esses comandos aplicam todas as migrações pendentes ao banco de dados                                               |
+|                      | dotnet ef database update                                       |      CLI do .NET       | Esses comandos aplicam todas as migrações pendentes ao banco de dados                                               |
+|       Rollback       | dotnet ef migrations remove                                     |      CLI do .NET       | Este comando reverte a última migração aplicada, retornando o banco de dados ao estado anterior                     |
+|                      | dotnet ef database update <NomeDaMigracaoAnterior>              |      CLI do .NET       | Se você precisar reverter para uma migração específica                                                              |
+|  Geração de Scripts  | dotnet ef migrations script -o MigrationScript.sql              |      CLI do .NET       | Esse comando gera um script SQL a partir de migrações para aplicar manualmente no banco de dados                    |
+| Scripts Idempotentes | dotnet ef migrations script --idempotent -o MigrationScript.sql |      CLI do .NET       | Esse comando gera um script que garante que todas as alterações necessárias sejam executadas apenas uma vez         |
 
 # ASP.NET
 
@@ -261,28 +262,22 @@ O Razor é uma parte crucial do ASP.NET para a criação de páginas web dinâmi
 
 Faz a transpilação do código p/ HTML, CSS e JS
 
-|Partes|Descrição|
-|:---:|:---|
-|MVC|Entrega de um site na arquitetura MVC|
-|Razor Pages|Abordagem simplificada para criação de páginas web|
-|Razor Library|Permite a criação de bibliotecas de componentes Razor reutilizáveis|
-|Blazor|Entrega um SPA (Single Page Application)|
+|    Partes     | Descrição                                                           |
+| :-----------: | :------------------------------------------------------------------ |
+|      MVC      | Entrega de um site na arquitetura MVC                               |
+|  Razor Pages  | Abordagem simplificada para criação de páginas web                  |
+| Razor Library | Permite a criação de bibliotecas de componentes Razor reutilizáveis |
+|    Blazor     | Entrega um SPA (Single Page Application)                            |
 
 ### Services (API)
 
 Os serviços no ASP.NET fornecem a funcionalidade de backend necessária para suportar aplicações web e móveis.
 
-|Partes|Descrição|
-|:---:|:---|
-|Web API|Criação de APIs que seguem os princípios REST|
-|SignalR|Adiciona funcionalidades para comunicação em tempo real entre servidor e cliente|
-|gRPC|Comunicação eficiente entre serviços usando o protocolo gRPC|
-
-### Identity
-
-Identity é um serviço de identificação que atende qualquer aplicação ASP.NET.
-
-Usado para autenticação de usuário, validação de JWT, entre outros.
+| Partes  | Descrição                                                                        |
+| :-----: | :------------------------------------------------------------------------------- |
+| Web API | Criação de APIs que seguem os princípios REST                                    |
+| SignalR | Adiciona funcionalidades para comunicação em tempo real entre servidor e cliente |
+|  gRPC   | Comunicação eficiente entre serviços usando o protocolo gRPC                     |
 
 ## Hosting
 
@@ -298,11 +293,11 @@ Esse ambiente pode variar dependendo de como e onde a aplicação é implantada.
 
 <img src="https://learn.microsoft.com/pt-br/aspnet/core/host-and-deploy/iis/index/_static/ancm-outofprocess.png?view=aspnetcore-8.0" alt="imagem" width="650px" height="100px"/>
 
-|Servidor|Descrição|
-|:---:|:---|
-|Kestrel|É um servidor web multiplataforma embutido no ASP.NET Core. Projetado para ser leve e eficiente, o Kestrel é adequado para ambientes de desenvolvimento e testes|
-|IIS|É um servidor web da Microsoft que pode hospedar aplicações ASP.NET. O IIS fornece recursos avançados, como autenticação, caching e balanceamento de carga|
-|Nginx e Apache|Em ambientes Linux, servidores web como Nginx e Apache podem atuar como proxies reversos que direcionam o tráfego para o Kestrel|
+|    Servidor    | Descrição                                                                                                                                                        |
+| :------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|    Kestrel     | É um servidor web multiplataforma embutido no ASP.NET Core. Projetado para ser leve e eficiente, o Kestrel é adequado para ambientes de desenvolvimento e testes |
+|      IIS       | É um servidor web da Microsoft que pode hospedar aplicações ASP.NET. O IIS fornece recursos avançados, como autenticação, caching e balanceamento de carga       |
+| Nginx e Apache | Em ambientes Linux, servidores web como Nginx e Apache podem atuar como proxies reversos que direcionam o tráfego para o Kestrel                                 |
 
 <details>
 <summary>Clique aqui para saber mais sobre o Kestrel.</summary>
@@ -388,6 +383,66 @@ Podem ser reutilizados em diferentes aplicações.
 
 Oferecem uma maneira flexível de adicionar ou remover funcionalidades da aplicação.
 
+## Identity
+
+O ASP.NET Identity é uma biblioteca de autenticação e autorização usada para gerenciar usuários e suas permissões em aplicações web ASP.NET.
+
+fornece uma infraestrutura robusta e extensível para lidar com autenticação (verificação de identidade) e autorização (controle de acesso) de usuários.
+
+|  Componentes  | Descrição                                                                                                                                   |
+| :-----------: | :------------------------------------------------------------------------------------------------------------------------------------------ |
+|     User      | O ASP.NET Identity fornece uma classe IdentityUser que pode ser estendida para incluir propriedades adicionais específicas da sua aplicação |
+|     Role      | Representa um papel ou grupo ao qual um usuário pode pertencer. Ajuda a gerenciar permissões de acesso com base no papel do usuário         |
+| SignInManager | Gerencia o processo de login, logout e autenticação de usuários. É responsável por verificar credenciais e manter o estado de autenticação  |
+|  UserManager  | Gerencia a criação, atualização e exclusão de usuários. Também fornece métodos para buscar e manipular informações de usuários              |
+|  RoleManager  | Gerencia a criação, atualização e exclusão de roles (papéis). Também pode ser usado para atribuir e remover papéis dos usuários             |
+
+Permite realizer o gerenciamento de usuários e papéis, além de gerenciar propriedades (nome, e-mail, senha) e associar usuários a esses papéis para controlar permissões.
+
+O ASP.NET Identity oferece suporte para autenticação de dois fatores (2FA), autenticação externa (por exemplo, login com Google ou Facebook) e recuperação de senha.
+
+Você pode estender IdentityUser e IdentityRole para adicionar propriedades personalizadas.
+
+### Getting Started
+
+Defina uma classe que herda de **IdentityDbContext** e configure seu contexto de banco de dados.
+
+```c#
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+{
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+    {
+    }
+}
+```
+
+Configure o ASP.NET Identity no Program.cs.
+
+```c#
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer("your-connection-string"));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ApplicationDbContext>();
+```
+
+### IdentityDbContext
+
+É uma especialização de DbContext fornecida pelo ASP.NET Identity.
+
+Ele fornece uma configuração pré-definida para as tabelas necessárias para a autenticação e autorização, como tabelas para usuários, papéis, e tokens de recuperação de senha.
+
+|      Tabela      | Descrição                                                                                               |
+| :--------------: | :------------------------------------------------------------------------------------------------------ |
+|   AspNetUsers    | Armazena informações sobre os usuários. Cada entrada representa um usuário na aplicação                 |
+|   AspNetRoles    | Armazena informações sobre os papéis (roles) definidos na aplicação. Cada entrada representa um papel   |
+| AspNetUserLogins | Armazena informações de logins externos                                                                 |
+| AspNetUserRoles  | Relaciona usuários aos papéis que eles possuem. Cada entrada mapeia um usuário para um papel específico |
+| AspNetUserClaims | Armazena declarações (claims) associadas a usuários                                                     |
+| AspNetRoleClaims | Armazena declarações associadas a papéis                                                                |
+
+Simplifica a configuração e a integração do ASP.NET Identity com Entity Framework Core, ainda permitindo configurações do modelo de dados usando EF Core.
+
 ## NuGet
 
 NuGet é o gerenciador de pacotes oficial para a plataforma .NET.
@@ -410,14 +465,14 @@ ASP.NET Core fornece uma infraestrutura de logging integrada que permite registr
 
 Pode ser configurado no arquivo `appsettings.json` ou via código no método ConfigureServices.
 
-|Log Level|Descrição|
-|:---:|:---|
-|Trace|Informação mais detalhada e volumosa|
-|Debug|Informação de depuração, menos detalhada que Trace|
-|Information|Informação geral sobre o fluxo da aplicação|
-|Warning|Potenciais problemas ou situações inusitadas|
-|Error|Erros que afetam o funcionamento da aplicação|
-|Critical|Falhas graves que necessitam de atenção imediata|
+|  Log Level  | Descrição                                          |
+| :---------: | :------------------------------------------------- |
+|    Trace    | Informação mais detalhada e volumosa               |
+|    Debug    | Informação de depuração, menos detalhada que Trace |
+| Information | Informação geral sobre o fluxo da aplicação        |
+|   Warning   | Potenciais problemas ou situações inusitadas       |
+|    Error    | Erros que afetam o funcionamento da aplicação      |
+|  Critical   | Falhas graves que necessitam de atenção imediata   |
 
 ```json
 {
@@ -553,13 +608,13 @@ Maneira mais rica e intuitiva de integrar lógica de servidor diretamente no HTM
 </form>
 ```
 
-|TagHelper|Descrição|
-|:---:|:---|
-|asp-controller|É usado para gerar URLs ou definir ações em formulários que apontam para um controller específico|
-|asp-action|É usado com asp-controller para especificar o método exato dentro do controller|
-|asp-for|É usado em formulários para vincular campos de entrada às propriedades do modelo|
-|asp-validation-for|É usado para exibir mensagens de validação para um campo específico em um formulário|
-|asp-items|É usado para criar uma lista suspensa (select) em um formulário, preenchendo-a com dados|
+|     TagHelper      | Descrição                                                                                         |
+| :----------------: | :------------------------------------------------------------------------------------------------ |
+|   asp-controller   | É usado para gerar URLs ou definir ações em formulários que apontam para um controller específico |
+|     asp-action     | É usado com asp-controller para especificar o método exato dentro do controller                   |
+|      asp-for       | É usado em formulários para vincular campos de entrada às propriedades do modelo                  |
+| asp-validation-for | É usado para exibir mensagens de validação para um campo específico em um formulário              |
+|     asp-items      | É usado para criar uma lista suspensa (select) em um formulário, preenchendo-a com dados          |
 
 ### Partial Views
 
@@ -701,16 +756,16 @@ Um Action Result é um objeto que implementa a interface IActionResult.
 
 Permitem aos desenvolvedores controlar a saída de um método de ação de forma flexível e poderosa.
 
-|Action Result|Descrição|Exemplo|
-|:---:|:---|:---|
-|ViewResult|Renderiza uma view HTML para o cliente|return View();|
-|JsonResult|Retorna dados JSON, ideal para APIs RESTful|return Json(data);|
-|RedirectResult|Redireciona o cliente para outra URL|return Redirect("http://example.com");|
-|RedirectToActionResult|Redireciona para outra ação do controlador|return RedirectToAction("ActionName", "ControllerName");|
-|ContentResult|Retorna texto simples como resposta HTTP|return Content("Hello World!");|
-|FileResult|Retorna um arquivo para download ou visualização|return File("path/to/file", "mime/type");|
-|EmptyResult|Retorna uma resposta HTTP vazia, sem conteúdo|return new EmptyResult();|
-|StatusCodeResult|Retorna um código de status HTTP específico, como 404 ou 500|return StatusCode(404);|
+|     Action Result      | Descrição                                                    | Exemplo                                                  |
+| :--------------------: | :----------------------------------------------------------- | :------------------------------------------------------- |
+|       ViewResult       | Renderiza uma view HTML para o cliente                       | return View();                                           |
+|       JsonResult       | Retorna dados JSON, ideal para APIs RESTful                  | return Json(data);                                       |
+|     RedirectResult     | Redireciona o cliente para outra URL                         | return Redirect("http://example.com");                   |
+| RedirectToActionResult | Redireciona para outra ação do controlador                   | return RedirectToAction("ActionName", "ControllerName"); |
+|     ContentResult      | Retorna texto simples como resposta HTTP                     | return Content("Hello World!");                          |
+|       FileResult       | Retorna um arquivo para download ou visualização             | return File("path/to/file", "mime/type");                |
+|      EmptyResult       | Retorna uma resposta HTTP vazia, sem conteúdo                | return new EmptyResult();                                |
+|    StatusCodeResult    | Retorna um código de status HTTP específico, como 404 ou 500 | return StatusCode(404);                                  |
 
 ### Roteamento
 
