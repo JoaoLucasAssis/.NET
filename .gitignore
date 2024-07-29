@@ -29,6 +29,7 @@ Thumbs.db
 secrets.json
 appsettings.Development.json
 appsettings.Local.json
+appsettings.json
 
 # Docker
 *.dockerignore
