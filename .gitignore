@@ -8,6 +8,7 @@ obj/
 *.user
 *.userosscache
 *.sln.docstates
+*.db
 
 # Diretórios e Arquivos do Visual Studio Code
 .vscode/
@@ -26,6 +27,8 @@ Thumbs.db
 
 # Arquivos de Configuração
 secrets.json
+appsettings.Development.json
+appsettings.Local.json
 
 # Docker
 *.dockerignore
