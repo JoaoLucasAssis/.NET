@@ -89,6 +89,8 @@ Elimina a necessidade de escrever grande parte do código SQL manualmente.
 
 Permite escrever consultas utilizando LINQ (Language Integrated Query), proporcionando uma forma intuitiva e tipada de acessar dados.
 
+> :bulb: Confira um template de configuração de modelo de dados no caminho /Templates/Entity Framework
+
 ### Modelagem de Dados
 
 Permite definir um modelo de dados usando classes .NET.
@@ -348,6 +350,8 @@ Após o endpoint processar a solicitação, a resposta passa de volta pelos midd
 
 Muitos middlewares são fornecidos por bibliotecas e pacotes externos que você adiciona ao seu projeto.
 
+> :bulb: Confira um template padrão de middleware no caminho /Templates/Middleware
+
 ### Como funciona?
 
 O pipeline de middlewares é configurado no servidor, no arquivo `Program.cs`, antes que qualquer solicitação seja processada.
@@ -490,6 +494,8 @@ Pode ser configurado no arquivo `appsettings.json` ou via código no método Con
 # MVC
 
 O padrão MVC (Model-View-Controller) é um padrão de arquitetura de software que separa uma aplicação em três componentes principais: Model, View e Controller.
+
+> :bulb: Confira o template ASP.NET MVC que implementa todos os conceitos abaixo no caminho /Templates/MVC
 
 ## Getting Started
 
