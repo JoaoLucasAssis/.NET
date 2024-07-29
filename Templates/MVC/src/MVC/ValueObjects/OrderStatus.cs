@@ -2,7 +2,7 @@
 
 public enum OrderStatus
 {
-    UnderReview,
-    Completed,
-    Delivered,
+    UnderReview = 1,
+    Completed = 2,
+    Delivered = 3,
 }

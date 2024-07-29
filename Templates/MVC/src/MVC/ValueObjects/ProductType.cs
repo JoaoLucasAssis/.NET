@@ -2,7 +2,7 @@
 
 public enum ProductType
 {
-    ForResale,
-    Service,
-    Packaging,
+    ForResale = 1,
+    Service = 2,
+    Packaging = 3,
 }
