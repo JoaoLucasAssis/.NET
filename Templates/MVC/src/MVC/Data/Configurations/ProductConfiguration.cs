@@ -10,7 +10,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
     {
         builder.ToTable("Products");
         builder.HasKey(e => e.Id);
-        builder.Property(e => e.Barcode).HasColumnType("VARCHAR(14)").IsRequired();
+        builder.Property(e => e.Name).HasColumnType("VARCHAR(50)").IsRequired();
         builder.Property(e => e.Description).HasColumnType("VARCHAR(60)");
         builder.Property(e => e.Price).IsRequired();
         builder.Property(e => e.ProductType).HasConversion<string>();

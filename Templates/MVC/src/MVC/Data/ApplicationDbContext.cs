@@ -21,11 +21,11 @@ public class ApplicationDbContext : IdentityDbContext
         builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
 
-public DbSet<MVC.Models.Client> Client { get; set; } = default!;
+    public DbSet<MVC.Models.Client> Client { get; set; } = default!;
 
-public DbSet<MVC.Models.Product> Product { get; set; } = default!;
+    public DbSet<MVC.Models.Product> Product { get; set; } = default!;
 
-public DbSet<MVC.Models.Item> Item { get; set; } = default!;
+    public DbSet<MVC.Models.Item> Item { get; set; } = default!;
 
-public DbSet<MVC.Models.Order> Order { get; set; } = default!;
+    public DbSet<MVC.Models.Order> Order { get; set; } = default!;
 }

@@ -11,7 +11,5 @@ public class ItemConfiguration : IEntityTypeConfiguration<Item>
         builder.ToTable("Items");
         builder.HasKey(e => e.Id);
         builder.Property(e => e.Qty).HasDefaultValue(1).IsRequired();
-        builder.Property(e => e.Price).IsRequired();
-        builder.Property(e => e.Discount).IsRequired();
     }
 }
