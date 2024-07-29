@@ -4,6 +4,7 @@ using MVC.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240727162426_Update-Order-EndDate")]
+    partial class UpdateOrderEndDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,7 +35,6 @@ namespace MVC.Migrations
 
                     b.Property<string>("CEP")
                         .IsRequired()
-                        .HasMaxLength(8)
                         .HasColumnType("CHAR(8)");
 
                     b.Property<string>("City")
@@ -42,16 +44,14 @@ namespace MVC.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(80)
                         .HasColumnType("VARCHAR(80)");
 
                     b.Property<string>("Phone")
-                        .HasMaxLength(11)
                         .HasColumnType("CHAR(11)");
 
-                    b.Property<int>("State")
-                        .HasMaxLength(2)
-                        .HasColumnType("int");
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("CHAR(2)");
 
                     b.HasKey("Id");
 
@@ -69,8 +69,14 @@ namespace MVC.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -101,7 +107,6 @@ namespace MVC.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Observation")
-                        .HasMaxLength(512)
                         .HasColumnType("VARCHAR(512)");
 
                     b.Property<DateTime>("StartDate")
@@ -128,17 +133,15 @@ namespace MVC.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Barcode")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(14)");
+
                     b.Property<string>("Description")
-                        .HasMaxLength(60)
                         .HasColumnType("VARCHAR(60)");
 
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("VARCHAR(50)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
