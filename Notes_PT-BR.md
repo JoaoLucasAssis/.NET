@@ -16,15 +16,14 @@
   
 * [MVC](#mvc)
   * [Getting Started](#getting-started)
-  * Model
+  * [Model](#model)
     * [DTO](#dto)
     * [Data Annotations](#data-annotations-1)
-  * View
+  * [View](#view)
     * [Razor](#razor)
     * [Partial Views](#partial-views)
     * [View Components](#view-components)
-  * Controller
-    * [Convenções](#convenções)
+  * [Controller](#controller)
     * [Action Results](#action-results)
     * [Roteamento](#roteamento)
     * [Parâmetros](#parâmetros)
@@ -431,16 +430,9 @@ Pode ser configurado no arquivo `appsettings.json` ou via código no método Con
 }
 
 ```
-
 # MVC
 
 O padrão MVC (Model-View-Controller) é um padrão de arquitetura de software que separa uma aplicação em três componentes principais: Model, View e Controller.
-
-|Componentes|Descrição|
-|:---:|:---|
-|Model|É a representação dos dados do mundo real que pode incluir validações de estado e regras de negócio|
-|View|São as páginas do site, responsáveis pela navegação, design, UX|
-|Controller|Intermediária entre a Model e a View. Invoca o método correto que irá processar e retornar os dados, para serem enviados para View|
 
 ## Getting Started
 
@@ -462,7 +454,11 @@ Navegue até a pasta AppMvcFuncional e execute o comando para associação da So
 dotnet sln ../../<your-application-name>.sln add <your-application-name>.csproj
 ```
 
-## DTO
+## Model
+
+É a representação dos dados do mundo real que pode incluir validações de estado e regras de negócio.
+
+### DTO
 
 Um Data Transfer Object (DTO) é um padrão de design usado para transferir dados entre diferentes camadas de uma aplicação.
 
@@ -472,7 +468,7 @@ Ao limitar a quantidade de dados transferidos, eles ajudam a reduzir a sobrecarg
 
 DTOs podem simplificar a estrutura de dados exposta às Views, oferecendo apenas as informações necessárias.
 
-## Data Annotations
+### Data Annotations
 
 Data Annotations são atributos que você pode aplicar às classes e propriedades do modelo para definir regras de validação e comportamento de formatação.
 
@@ -502,25 +498,27 @@ internal class Order
 }
 ```
 
-## Razor
+## View
 
-**Razor Views** são arquivos HTML mesclados com recursos do Razor.
+São as páginas do site, responsáveis pela navegação, design, UX.
+
+### Razor 
+
+`Razor Views` são arquivos HTML mesclados com recursos do Razor.
 
 Transforma as views em arquivos HTML puros para a interpretação do browser.
 
-### Razor Syntax
-
-Razor Syntax é a linguagem usada em Razor Views, que permite a combinação de C# e HTML.
+`Razor Syntax` é a linguagem usada em Razor Views, que permite a combinação de C# e HTML.
 
 Tem uma sintaxe minimalista que facilita a leitura e escrita de código.
 
 Ele usa '@' para transitar entre HTML e C#.
 
 ```html
-// Specifies the model that will be used to the view.
+<!-- Specifies the model that will be used to the view. -->
 @model MyApp.Models.Product
 
-// Access the properties and methods of the model specified by @model
+<!-- Access the properties and methods of the model specified by @model -->
 <h2>@Model.Name</h2>
 <p>Price: @Model.Price.ToString("C")</p>
 ```
@@ -532,16 +530,27 @@ TagHelpers são uma funcionalidade que permite a criação de tags HTML personal
 Maneira mais rica e intuitiva de integrar lógica de servidor diretamente no HTML.
 
 ```html
-<form asp-controller="Account" asp-action="Login">
-    <label asp-for="Username"></label>
-    <input asp-for="Username" />
+<form asp-controller="Product" asp-action="Edit">
+    <div class="form-group mb-3">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
     
-    <label asp-for="Password"></label>
-    <input asp-for="Password" type="password" />
+    <div class="form-group mb-3">
+        <label asp-for="Description"></label>
+        <input asp-for="Description" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ProductType" class="control-label"></label>
+        <select asp-for="ProductType" class="form-control" asp-items="ViewBag.Types"></select>
+        <span asp-validation-for="ProductType" class="text-danger"></span>
+    </div>
 
     <button type="submit">Login</button>
 </form>
-
 ```
 
 |TagHelper|Descrição|
@@ -549,8 +558,10 @@ Maneira mais rica e intuitiva de integrar lógica de servidor diretamente no HTM
 |asp-controller|É usado para gerar URLs ou definir ações em formulários que apontam para um controller específico|
 |asp-action|É usado com asp-controller para especificar o método exato dentro do controller|
 |asp-for|É usado em formulários para vincular campos de entrada às propriedades do modelo|
+|asp-validation-for|É usado para exibir mensagens de validação para um campo específico em um formulário|
+|asp-items|É usado para criar uma lista suspensa (select) em um formulário, preenchendo-a com dados|
 
-## Partial Views
+### Partial Views
 
 Partial Views são subcomponentes das views principais.
 
@@ -561,11 +572,11 @@ São muito utilizadas para renderizar parte de uma view através de requisiçõe
 De acordo com a convenção de nomenclatura em ASP.NET MVC, as partial views geralmente devem começar com um sublinhado '_'.
 
 ```html
-// Uses a taghelper to call a partial view within the _Layout.cshtml
+<!-- Uses a taghelper to call a partial view within the _Layout.cshtml -->
 <partial name="_NavBar" />
 ```
 
-### _ViewStart
+#### _ViewStart
 
 `_ViewStart.cshtml` é um arquivo no ASP.NET MVC que define o layout padrão para todas as views dentro de uma pasta e suas subpastas.
 
@@ -578,7 +589,7 @@ o arquivo está localizado na raiz do diretório na pasta /Views.
 }
 ```
 
-### _ViewImports
+#### _ViewImports
 
 `_ViewImports.cshtml` é um arquivo no ASP.NET MVC que é utilizado para importar namespaces e configurar diretivas comuns que todas as views devem usar.
 
@@ -587,7 +598,7 @@ o arquivo está localizado na raiz do diretório na pasta /Views.
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 ```
 
-### _Layout
+#### _Layout
 
 `_Layout.cshtml` é o arquivo que define o layout principal da aplicação.
 
@@ -606,7 +617,7 @@ Define a estrutura geral da interface do usuário que será compartilhada por v�
         <partial name="_NavBar" />
     </header>
     <main role="main">
-        // The specific content of each view will be rendered here
+        <!-- The specific content of each view will be rendered here -->
         @RenderBody()
     </main>
     <footer>
@@ -616,7 +627,7 @@ Define a estrutura geral da interface do usuário que será compartilhada por v�
 </html>
 ```
 
-## View Components
+### View Components
 
 View Components são componentes independentes das views.
 
@@ -629,8 +640,8 @@ Todos os View Components devem ficar localizados na pasta /ViewComponent.
 > :warning: Para usar View Component deve-se adicionar a linha:
 >
 > @addTagHelper "*, your-namespace"
->
-> A linha deve ser adicionada no arquivo _ViewImports.cshtml
+> 
+> :warning: A linha deve ser adicionada no arquivo _ViewImports.cshtml
 
 ```c#
 // All components must implement the ViewComponent class and have the InvokeAsync action
@@ -656,10 +667,13 @@ As duas formas abaixo são válidas para chamar um View Component em uma Razor V
 
 ```html
 @await Component.InvokeAsync("Alert", new { message = "Policity Privacy © 2024" })
+
 <vc:alert />
 ```
 
-## Convenções
+## Controller
+
+Intermediária entre a Model e a View. Invoca o método correto que irá processar e retornar os dados, para serem enviados para View.
 
 No ASP.NET MVC, uma das principais convenções que facilita o desenvolvimento é a associação automática entre o nome dos métodos de ação nos controllers e as views correspondentes.
 
@@ -679,7 +693,7 @@ public class ProductsController : Controller
 
 O framework procura uma view cujo nome corresponda ao nome do método de ação, permitindo que os desenvolvedores evitem a necessidade de especificar explicitamente o nome da view a ser retornada.
 
-## Action Results
+### Action Results
 
 Os Action Results são componentes que determinam como uma resposta é retornada ao cliente após a execução de um método de ação em um controller.
 
@@ -698,7 +712,7 @@ Permitem aos desenvolvedores controlar a saída de um método de ação de forma
 |EmptyResult|Retorna uma resposta HTTP vazia, sem conteúdo|return new EmptyResult();|
 |StatusCodeResult|Retorna um código de status HTTP específico, como 404 ou 500|return StatusCode(404);|
 
-## Roteamento
+### Roteamento
 
 O roteamento no ASP.NET MVC funciona como um mapeamento entre a URL solicitada e o código que a processa, que geralmente é um controller.
 
@@ -719,7 +733,7 @@ app.UseEndpoints(endpoints =>
 };
 ```
 
-### Atributos
+#### Atributos
 
 Os atributos de rota permitem definir regras de roteamento diretamente nos controladores e ações por meio de anotações.
 
@@ -728,17 +742,18 @@ Isso proporciona maior controle e flexibilidade ao roteamento, permitindo especi
 ```c#
 [Route("/"), Order = 0] // Defines the default route for ProductsController, which automatically calls the Index() method
 [Route("products"), Order = 1] // Defines that all actions in the ProductsController will be under the /products base URL
+[Authorize]
 public class ProductsController : Controller
 {
-    // Defines that the action method should be called when the server receives an HTTP GET request for the /list URL
     [HttpGet("list")]
+    [AllowAnonymous]
     public IActionResult List()
     {
         return View();
     }
 
-    // Defines that the action method should be called when the server receives an HTTP POST request for the /details/id URL
     [HttpPost("details/{id}")]
+    [ValidateAntiForgeryToken]
     public IActionResult Details(int id)
     {
 	// logic
@@ -746,13 +761,118 @@ public class ProductsController : Controller
 }
 ```
 
-## Parâmetros
+<table style="width: 100%; background-color: transparent;">
+    <thead>
+        <tr style="background-color: transparent;">
+            <th style="padding: 10px; width: 20px; text-align: center;">Atributo</th>
+            <th style="padding: 10px; width: 570px;">Descrição</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Roteamento -->
+        <tr style="background-color: transparent;">
+            <td style="padding: 10px; color: #00796b; text-align: center;">Route</td>
+            <td style="padding: 10px;">Define uma rota para um método de ação.</td>
+        </tr>
+        <tr style="background-color: transparent;">
+            <td style="padding: 10px; color: #00796b; text-align: center;">RoutePrefix</td>
+            <td style="padding: 10px;">Define um prefixo de rota comum para todas as ações em um controlador.</td>
+        </tr>
+        <!-- Métodos HTTP -->
+        <tr style="background-color: transparent;">
+            <td style="padding: 10px; color: #ab47bc; text-align: center;">HttpGet</td>
+            <td style="padding: 10px;">Especifica que o método de ação responde a requisições HTTP GET.</td>
+        </tr>
+        <tr style="background-color: transparent;">
+            <td style="padding: 10px; color: #ab47bc; text-align: center;">HttpPost</td>
+            <td style="padding: 10px;">Especifica que o método de ação responde a requisições HTTP POST.</td>
+        </tr>
+        <tr style="background-color: transparent;">
+            <td style="padding: 10px; color: #ab47bc; text-align: center;">HttpPut</td>
+            <td style="padding: 10px;">Especifica que o método de ação responde a requisições HTTP PUT.</td>
+        </tr>
+        <tr style="background-color: transparent;">
+            <td style="padding: 10px; color: #ab47bc; text-align: center;">HttpDelete</td>
+            <td style="padding: 10px;">Especifica que o método de ação responde a requisições HTTP DELETE.</td>
+        </tr>
+        <!-- Autorização e Segurança -->
+        <tr style="background-color: transparent;">
+            <td style="padding: 10px; color: #66bb6a; text-align: center;">Authorize</td>
+            <td style="padding: 10px;">Restringe o acesso ao método de ação ou controlador a usuários autorizados.</td>
+        </tr>
+        <tr style="background-color: transparent;">
+            <td style="padding: 10px; color: #66bb6a; text-align: center;">AllowAnonymous</td>
+            <td style="padding: 10px;">Permite acesso anônimo (não autenticado) ao método de ação ou controlador.</td>
+        </tr>
+        <tr style="background-color: transparent;">
+            <td style="padding: 10px; color: #66bb6a; text-align: center;">ValidateAntiForgeryToken</td>
+            <td style="padding: 10px;">Valida o token anti-forgery para prevenir ataques CSRF.</td>
+        </tr>
+        <!-- Vinculação e Validação -->
+        <tr style="background-color: transparent;">
+            <td style="padding: 10px; color: #ff7043; text-align: center;">FromBody</td>
+            <td style="padding: 10px;">Faz a vinculação do parâmetro com o corpo da requisição.</td>
+        </tr>
+        <tr style="background-color: transparent;">
+            <td style="padding: 10px; color: #ff7043; text-align: center;">FromRoute</td>
+            <td style="padding: 10px;">Faz a vinculação do parâmetro com os dados da rota.</td>
+        </tr>
+        <tr style="background-color: transparent;">
+            <td style="padding: 10px; color: #ff7043; text-align: center;">FromHeader</td>
+            <td style="padding: 10px;">Faz a vinculação do parâmetro com o cabeçalho da requisição.</td>
+        </tr>
+        <tr style="background-color: transparent;">
+            <td style="padding: 10px; color: #ff7043; text-align: center;">FromForm</td>
+            <td style="padding: 10px;">Faz a vinculação do parâmetro com os dados do formulário.</td>
+        </tr>
+        <tr style="background-color: transparent;">
+            <td style="padding: 10px; color: #ff7043; text-align: center;">NonAction</td>
+            <td style="padding: 10px;">Marca um método que não deve ser tratado como um método de ação.</td>
+        </tr>
+        <tr style="background-color: transparent;">
+            <td style="padding: 10px; color: #ff7043; text-align: center;">Bind</td>
+            <td style="padding: 10px;">Especifica quais propriedades devem ser vinculadas a partir da requisição.</td>
+        </tr>
+        <tr style="background-color: transparent;">
+            <td style="padding: 10px; color: #ff7043; text-align: center;">DefaultValue</td>
+            <td style="padding: 10px;">Define um valor padrão para um parâmetro.</td>
+        </tr>
+        <tr style="background-color: transparent;">
+            <td style="padding: 10px; color: #ff7043; text-align: center;">AllowEmpty</td>
+            <td style="padding: 10px;">Permite um valor vazio para o parâmetro.</td>
+        </tr>
+        <tr style="background-color: transparent;">
+            <td style="padding: 10px; color: #ff7043; text-align: center;">ValidateModel</td>
+            <td style="padding: 10px;">Valida o estado do modelo antes de executar o método de ação.</td>
+        </tr>
+        <!-- Resposta e Consumo -->
+        <tr style="background-color: transparent;">
+            <td style="padding: 10px; color: #64b5f6; text-align: center;">Produces</td>
+            <td style="padding: 10px;">Especifica os tipos de resposta produzidos pelo método de ação.</td>
+        </tr>
+        <tr style="background-color: transparent;">
+            <td style="padding: 10px; color: #64b5f6; text-align: center;">Consumes</td>
+            <td style="padding: 10px;">Especifica os tipos de requisições consumidos pelo método de ação.</td>
+        </tr>
+        <tr style="background-color: transparent;">
+            <td style="padding: 10px; color: #64b5f6; text-align: center;">ProducesResponseType</td>
+            <td style="padding: 10px;">Especifica o tipo de resposta retornada pelo método de ação.</td>
+        </tr>
+        <!-- Filtros -->
+        <tr style="background-color: transparent;">
+            <td style="padding: 10px; color: #ff5555; text-align: center;">CustomFilter</td>
+            <td style="padding: 10px;">Aplica um filtro personalizado que implementa a interface `IFilter`.</td>
+        </tr>
+    </tbody>
+</table>
+
+### Parâmetros
 
 Passagem de parâmetros refere-se à capacidade de fornecer dados para um método de ação no controller a partir de uma solicitação HTTP.
 
 Esses parâmetros podem ser extraídos de diferentes partes da solicitação, como a URL, parâmetros de consulta, corpo da solicitação, ou cabeçalhos.
 
-### Model Binding
+#### Model Binding
 
 O ASP.NET MVC usa um processo chamado model binding para mapear os valores das partes da solicitação para os parâmetros dos métodos de ação.
 
@@ -776,8 +896,6 @@ public ActionResult Create(ICollection collection)
 }
 ```
 
-#### Atributos
-
 Atributos como `FromForm`, `FromQuery` e `FromBody` podem ser usados para especificar explicitamente a origem dos dados para parâmetros de métodos.
 
 ```c#
@@ -796,7 +914,7 @@ public ActionResult Create([Bind("Name, Email")] ICollection collection)
 }
 ```
 
-### Múltiplos Parâmetros
+#### Múltiplos Parâmetros
 
 Para passar múltiplos parâmetros, adicione-os à URL usando ? para o primeiro parâmetro e & para os subsequentes.
 
