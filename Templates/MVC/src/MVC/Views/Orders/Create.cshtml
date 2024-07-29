@@ -4,42 +4,30 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Order</h4>
-<hr />
-<div class="row">
+<div class="row mt-5">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+
+            <div class="form-group mb-3">
                 <label asp-for="ClientId" class="control-label"></label>
                 <select asp-for="ClientId" class ="form-control" asp-items="ViewBag.ClientId"></select>
             </div>
-            <div class="form-group">
-                <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" />
-                <span asp-validation-for="EndDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="form-control"></select>
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+
+            <input type="hidden" asp-for="Status" value="@ViewBag.Status" />
+
+            <div class="form-group mb-3">
                 <label asp-for="Observation" class="control-label"></label>
                 <input asp-for="Observation" class="form-control" />
                 <span asp-validation-for="Observation" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-outline-primary">Back to List</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

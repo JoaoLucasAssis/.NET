@@ -1,8 +1,51 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    .section-margin {
+        margin-bottom: 40px;
+    }
+</style>
+
+<div class="container">
+    <!-- Overview -->
+    <section id="intro" class="my-4 section-margin">
+        <h1>What is this?</h1>
+        <p>This project is a template developed during the "Fundamentals of ASP.NET MVC" course on the desenvolvedor.io platform. The goal is to provide a solid foundation for understanding and applying essential ASP.NET MVC concepts.</p>
+    </section>
+
+    <!-- Template Features Section -->
+    <section id="features" class="my-4 section-margin">
+        <h2>Template Features</h2>
+        <p>The template is a comprehensive platform for managing orders and clients. It allows you to:</p>
+        <ul>
+            <li>Request orders for clients.</li>
+            <li>Add registered items to orders.</li>
+            <li>Register new clients and products.</li>
+        </ul>
+        <p>Additionally, the project uses smart routes to ensure a friendly URL structure optimized for SEO.</p>
+    </section>
+
+    <!-- Entity Framework Core Section -->
+    <section id="efcore" class="my-4 section-margin">
+        <h2>Entity Framework Core Usage</h2>
+        <p>The project uses an Entity Framework Core template located in the same directory as this template. Entity Framework Core is used to:</p>
+        <ul>
+            <li>Manage data access and manipulation in the database.</li>
+            <li>Facilitate CRUD (Create, Read, Update, Delete) operations with a code-based approach.</li>
+            <li>Ensure that the database schema is synchronized with the model classes.</li>
+        </ul>
+    </section>
+
+    <!-- Identity Section -->
+    <section id="identity" class="my-4 section-margin">
+        <h2>Identity Usage</h2>
+        <p>The project uses ASP.NET Identity to:</p>
+        <ul>
+            <li>Manage user authentication and authorization.</li>
+            <li>Allow only authenticated users to access certain areas of the application, such as creating and editing orders.</li>
+            <li>Manage user profiles and roles efficiently and securely.</li>
+        </ul>
+    </section>
 </div>

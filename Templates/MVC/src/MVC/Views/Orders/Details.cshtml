@@ -4,17 +4,13 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Order</h4>
-    <hr />
+<div class="mt-5">
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Client)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Client.CEP)
+            @Html.DisplayFor(model => model.Client.Name)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.StartDate)
@@ -41,8 +37,29 @@
             @Html.DisplayFor(model => model.Observation)
         </dd>
     </dl>
+
+    <h4>Items in this Order</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.Product?.Name</td>
+                    <td>@item.Qty</td>
+                    <td>@item.Product?.Price.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-outline-primary">Back to List</a>
 </div>
