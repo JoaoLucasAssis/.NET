@@ -1010,3 +1010,24 @@ public IActionResult Search(string query, int page, int index)
     // logic
 }
 ```
+
+### ModelState
+
+ModelState é um dicionário que contém o estado de cada propriedade do modelo e quaisquer erros de validação associados.
+
+Ele armazena o estado do modelo durante a validação e pode ser usado para verificar se os dados submetidos estão corretos e para exibir mensagens de erro.
+
+```c#
+[HttpPost("create-client")]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Create([Bind("Id,Name,Phone,CEP,State,City")] Client client)
+{
+    if (ModelState.IsValid)
+    {
+        _context.Add(client);
+        await _context.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
+    }
+    return View(client); // If ModelState is not valid, return the view with errors.
+}
+```
