@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Mono.TextTemplating;
 using MVC.Data;
 using MVC.Models;
+using MVC.ValueObjects;
 
 namespace MVC.Controllers
 {
+    [Route("clients")]
+    [Authorize]
     public class ClientsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -19,19 +20,16 @@ namespace MVC.Controllers
             _context = context;
         }
 
-        // GET: Clients
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Client.ToListAsync());
         }
 
-        // GET: Clients/Details/5
-        public async Task<IActionResult> Details(int? id)
+        [Route("details-client/{id:int}")]
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            ContextConnected();
 
             var client = await _context.Client
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -43,16 +41,16 @@ namespace MVC.Controllers
             return View(client);
         }
 
-        // GET: Clients/Create
+        [Route("create-client")]
         public IActionResult Create()
         {
+            var states = StatesOptions();
+            ViewData["States"] = new SelectList(states, "Id", "Code");
+
             return View();
         }
 
-        // POST: Clients/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("create-client")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Phone,CEP,State,City")] Client client)
         {
@@ -65,13 +63,13 @@ namespace MVC.Controllers
             return View(client);
         }
 
-        // GET: Clients/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        [Route("edit-client/{id:int}")]
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            ContextConnected();
+
+            var states = StatesOptions();
+            ViewData["States"] = new SelectList(states, "Id", "Code");
 
             var client = await _context.Client.FindAsync(id);
             if (client == null)
@@ -81,48 +79,29 @@ namespace MVC.Controllers
             return View(client);
         }
 
-        // POST: Clients/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("edit-client/{id:int}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Phone,CEP,State,City")] Client client)
         {
-            if (id != client.Id)
+            if (id != client.Id || !ClientExists(client.Id))
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(client);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ClientExists(client.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+
+                _context.Update(client);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(client);
         }
 
-        // GET: Clients/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        [Route("delete-client/{id:int}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            ContextConnected();
 
             var client = await _context.Client
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -134,8 +113,7 @@ namespace MVC.Controllers
             return View(client);
         }
 
-        // POST: Clients/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost("delete-client/{id:int}"), ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -152,6 +130,27 @@ namespace MVC.Controllers
         private bool ClientExists(int id)
         {
             return _context.Client.Any(e => e.Id == id);
+        }
+
+        private void ContextConnected()
+        {
+            if (_context == null || _context.Client == null)
+            {
+                throw new InvalidOperationException("O contexto do banco de dados não está conectado ou a tabela Client não está acessível.");
+            }
+        }
+
+        private IEnumerable<object> StatesOptions()
+        {
+            var states = Enum
+                .GetValues(typeof(BrazilianStates))
+                .Cast<BrazilianStates>()
+                .Select(s => new 
+                {
+                    Id = (int)s,
+                    Code = s.ToString()
+                });
+            return states;
         }
     }
 }

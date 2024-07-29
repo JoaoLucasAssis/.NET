@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MVC.Data;
 using MVC.Models;
+using MVC.ValueObjects;
 
 namespace MVC.Controllers
 {
+    [Route("products")]
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -19,19 +19,16 @@ namespace MVC.Controllers
             _context = context;
         }
 
-        // GET: Products
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Product.ToListAsync());
         }
 
-        // GET: Products/Details/5
-        public async Task<IActionResult> Details(int? id)
+        [Route("details-product/{id:int}")]
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            ContextConnected();
 
             var product = await _context.Product
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -43,18 +40,18 @@ namespace MVC.Controllers
             return View(product);
         }
 
-        // GET: Products/Create
+        [Route("create-product")]
         public IActionResult Create()
         {
+            var types = ProductTypesOptions();
+            ViewData["Types"] = new SelectList(types, "Id", "Type");
+
             return View();
         }
 
-        // POST: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("create-product")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Barcode,Description,Price,ProductType,IsAvailable")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,ProductType,IsAvailable")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -65,64 +62,58 @@ namespace MVC.Controllers
             return View(product);
         }
 
-        // GET: Products/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        [Route("edit-product/{id:int}")]
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            ContextConnected();
 
             var product = await _context.Product.FindAsync(id);
             if (product == null)
             {
                 return NotFound();
             }
+
+            var types = ProductTypesOptions();
+            ViewData["Types"] = new SelectList(types, "Id", "Type");
+
             return View(product);
         }
 
-        // POST: Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("edit-product/{id:int}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Barcode,Description,Price,ProductType,IsAvailable")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,ProductType,IsAvailable")] Product product)
         {
-            if (id != product.Id)
+            if (id != product.Id || !ProductExists(product.Id))
             {
                 return NotFound();
             }
 
+            ModelState.Remove("Price");
+
+            var dbProduct = await _context.Product.FirstOrDefaultAsync(p => p.Id == id);
+            if (dbProduct == null)
+            {
+                return NotFound();
+            }
+            dbProduct.Name = product.Name;
+            dbProduct.Description = product.Description;
+            dbProduct.ProductType = product.ProductType;
+            dbProduct.IsAvailable = product.IsAvailable;
+
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductExists(product.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+               _context.Update(dbProduct);
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
         }
 
-        // GET: Products/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        [Route("delete-product/{id:int}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            ContextConnected();
 
             var product = await _context.Product
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -134,8 +125,7 @@ namespace MVC.Controllers
             return View(product);
         }
 
-        // POST: Products/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost("delete-product/{id:int}"), ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -152,6 +142,27 @@ namespace MVC.Controllers
         private bool ProductExists(int id)
         {
             return _context.Product.Any(e => e.Id == id);
+        }
+
+        private void ContextConnected()
+        {
+            if (_context == null || _context.Product == null)
+            {
+                throw new InvalidOperationException("O contexto do banco de dados não está conectado ou a tabela Product não está acessível.");
+            }
+        }
+
+        private IEnumerable<object> ProductTypesOptions()
+        {
+            var types = Enum
+                .GetValues(typeof(ProductType))
+                .Cast<ProductType>()
+                .Select(s => new
+                {
+                    Id = (int)s,
+                    Type = s.ToString()
+                });
+            return types;
         }
     }
 }
