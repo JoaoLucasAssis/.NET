@@ -58,6 +58,7 @@ public class ItemsController : Controller
         {
             _context.Add(item);
             await _context.SaveChangesAsync();
+            TempData["Success"] = "Operation completed successfully!";
             return RedirectToAction(nameof(Index));
         }
         ViewData["OrderId"] = new SelectList(_context.Order, "Id", "Id", item.OrderId);
@@ -103,7 +104,7 @@ public class ItemsController : Controller
         {
             _context.Update(dbItem);
             await _context.SaveChangesAsync();
-
+            TempData["Success"] = "Operation completed successfully!";
             return RedirectToAction(nameof(Index));
         }
 
@@ -141,6 +142,7 @@ public class ItemsController : Controller
         }
 
         await _context.SaveChangesAsync();
+        TempData["Success"] = "Operation completed successfully!";
         return RedirectToAction(nameof(Index));
     }
 

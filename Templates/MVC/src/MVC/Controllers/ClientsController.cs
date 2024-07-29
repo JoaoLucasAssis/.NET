@@ -58,6 +58,7 @@ namespace MVC.Controllers
             {
                 _context.Add(client);
                 await _context.SaveChangesAsync();
+                TempData["Success"] = "Operation completed successfully!";
                 return RedirectToAction(nameof(Index));
             }
             return View(client);
@@ -93,6 +94,7 @@ namespace MVC.Controllers
 
                 _context.Update(client);
                 await _context.SaveChangesAsync();
+                TempData["Success"] = "Operation completed successfully!";
                 return RedirectToAction(nameof(Index));
             }
             return View(client);
@@ -124,6 +126,7 @@ namespace MVC.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["Success"] = "Operation completed successfully!";
             return RedirectToAction(nameof(Index));
         }
 

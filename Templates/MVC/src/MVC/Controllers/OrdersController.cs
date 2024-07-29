@@ -70,7 +70,7 @@ namespace MVC.Controllers
             {
                 _context.Add(order);
                 await _context.SaveChangesAsync();
-                
+                TempData["Success"] = "Operation completed successfully!";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -119,6 +119,7 @@ namespace MVC.Controllers
             {
                 _context.Update(dbOrder);
                 await _context.SaveChangesAsync();
+                TempData["Success"] = "Operation completed successfully!";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -155,6 +156,7 @@ namespace MVC.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["Success"] = "Operation completed successfully!";
             return RedirectToAction(nameof(Index));
         }
 
