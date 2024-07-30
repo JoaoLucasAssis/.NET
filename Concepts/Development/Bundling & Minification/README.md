@@ -14,7 +14,7 @@ Reduzem o tempo de carregamento das páginas e melhoram a eficiência geral.
 
 Após a instalação, reabra o Visual Studio 2022 e a extensão estará instalada.
 
-Para configuração, veja mais em [configuraçao](#configuração).
+Para configuração, [clique aqui](#configuração).
 
 ## Bundling
 
