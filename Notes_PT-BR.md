@@ -2,34 +2,64 @@
 
 ## Sumário
 
-* [.NET](#net)
-  * [Dupla Compilação](#dupla-compilacao)
-  * [Garbage Collector](#garbage-collector)
-  * [Entity Framework](#entity-framework)
-
-* [ASP.NET](#aspnet)
-  * [Hosting](#hosting)
-  * [Pipeline](#pipeline)
-  * [Middleware](#middleware)
-  * [Identity](#identity)
-  * [NuGet](#nuget)
-  * [Logging](#logging-e-loglevel)
-  
-* [MVC](#mvc)
-  * [Getting Started](#getting-started)
-  * [Model](#model)
-    * [DTO](#dto)
-    * [Data Annotations](#data-annotations-1)
-  * [View](#view)
-    * [Razor](#razor)
-    * [Partial Views](#partial-views)
-    * [View Components](#view-components)
-    * [Estados]("#estados")
-  * [Controller](#controller)
-    * [Action Results](#action-results)
-    * [Roteamento](#roteamento)
-    * [Parâmetros](#parâmetros)
-    * [ModelState](#modelstate)
+- [Anotações sobre .NET](#anotações-sobre-net)
+  - [Sumário](#sumário)
+- [.NET](#net)
+  - [Dupla Compilação](#dupla-compilação)
+    - [IL (Intermediate Language)](#il-intermediate-language)
+    - [CLR (Common Language Runtime)](#clr-common-language-runtime)
+  - [Garbage Collector](#garbage-collector)
+  - [Entity Framework](#entity-framework)
+    - [Modelagem de Dados](#modelagem-de-dados)
+    - [Mecanismos de Modelagem](#mecanismos-de-modelagem)
+    - [DbContext](#dbcontext)
+    - [Configuração do Modelo de Dados](#configuração-do-modelo-de-dados)
+      - [Fluent API](#fluent-api)
+      - [Data Annotations](#data-annotations)
+    - [Migrações](#migrações)
+- [ASP.NET](#aspnet)
+  - [Como o ASP.NET está organizado?](#como-o-aspnet-está-organizado)
+    - [Razor (Sites)](#razor-sites)
+    - [Services (API)](#services-api)
+  - [Hosting](#hosting)
+    - [In Process Hosting](#in-process-hosting)
+    - [Out Process Hosting](#out-process-hosting)
+  - [O que é Kestrel?](#o-que-é-kestrel)
+    - [Funcionamento em Ambientes de Produção](#funcionamento-em-ambientes-de-produção)
+  - [Pipeline](#pipeline)
+  - [Middleware](#middleware)
+    - [Como funciona?](#como-funciona)
+    - [Porque importa?](#porque-importa)
+  - [Identity](#identity)
+    - [Getting Started](#getting-started)
+    - [IdentityDbContext](#identitydbcontext)
+  - [NuGet](#nuget)
+    - [Pacotes NuGet](#pacotes-nuget)
+  - [Logging e LogLevel](#logging-e-loglevel)
+- [MVC](#mvc)
+  - [Getting Started](#getting-started-1)
+  - [Model](#model)
+    - [DTO](#dto)
+    - [Data Annotations](#data-annotations-1)
+  - [View](#view)
+    - [Razor](#razor)
+    - [TagHelpers](#taghelpers)
+    - [Partial Views](#partial-views)
+      - [\_ViewStart](#_viewstart)
+      - [\_ViewImports](#_viewimports)
+      - [\_Layout](#_layout)
+    - [View Components](#view-components)
+    - [Estados](#estados)
+  - [Controller](#controller)
+    - [Action Results](#action-results)
+    - [Roteamento](#roteamento)
+      - [Atributos](#atributos)
+    - [Parâmetros](#parâmetros)
+      - [Model Binding](#model-binding)
+      - [Múltiplos Parâmetros](#múltiplos-parâmetros)
+    - [ModelState](#modelstate)
+  - [Conceitos](#conceitos)
+    - [Bundling e Minification](#bundling-e-minification)
 
 # .NET
 
@@ -1038,3 +1068,17 @@ public async Task<IActionResult> Create([Bind("Id,Name,Phone,CEP,State,City")] C
     return View(client); // If ModelState is not valid, return the view with errors.
 }
 ```
+
+## Conceitos
+
+### Bundling e Minification
+
+Bundling e minification são técnicas usadas para otimizar o desempenho das aplicações web.
+
+Reduzem o tempo de carregamento das páginas e melhoram a eficiência geral.
+
+`Bundling` é o processo de combinar vários arquivos (como arquivos CSS e JavaScript) em um único arquivo.
+
+`Minification` é o processo de remover todos os caracteres desnecessários dos arquivos de código sem alterar a funcionalidade do código.
+
+Para obter mais informações sobre este assunto, [clique aqui]() para ler um resumo detalhado do conceito.
