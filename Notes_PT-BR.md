@@ -1,65 +1,32 @@
-# Anotações sobre .NET
-
-## Sumário
-
-- [Anotações sobre .NET](#anotações-sobre-net)
-  - [Sumário](#sumário)
 - [.NET](#net)
   - [Dupla Compilação](#dupla-compilação)
-    - [IL (Intermediate Language)](#il-intermediate-language)
-    - [CLR (Common Language Runtime)](#clr-common-language-runtime)
   - [Garbage Collector](#garbage-collector)
   - [Entity Framework](#entity-framework)
-    - [Modelagem de Dados](#modelagem-de-dados)
-    - [Mecanismos de Modelagem](#mecanismos-de-modelagem)
-    - [DbContext](#dbcontext)
-    - [Configuração do Modelo de Dados](#configuração-do-modelo-de-dados)
-      - [Fluent API](#fluent-api)
-      - [Data Annotations](#data-annotations)
-    - [Migrações](#migrações)
 - [ASP.NET](#aspnet)
-  - [Como o ASP.NET está organizado?](#como-o-aspnet-está-organizado)
-    - [Razor (Sites)](#razor-sites)
-    - [Services (API)](#services-api)
   - [Hosting](#hosting)
-    - [In Process Hosting](#in-process-hosting)
-    - [Out Process Hosting](#out-process-hosting)
-  - [O que é Kestrel?](#o-que-é-kestrel)
-    - [Funcionamento em Ambientes de Produção](#funcionamento-em-ambientes-de-produção)
   - [Pipeline](#pipeline)
   - [Middleware](#middleware)
-    - [Como funciona?](#como-funciona)
-    - [Porque importa?](#porque-importa)
   - [Identity](#identity)
-    - [Getting Started](#getting-started)
-    - [IdentityDbContext](#identitydbcontext)
   - [NuGet](#nuget)
-    - [Pacotes NuGet](#pacotes-nuget)
   - [Logging e LogLevel](#logging-e-loglevel)
 - [MVC](#mvc)
-  - [Getting Started](#getting-started-1)
+  - [Getting Started](#getting-started)
+  - [Conceitos](#conceitos)
+    - [Bundling e Minification](#bundling-e-minification)
   - [Model](#model)
     - [DTO](#dto)
-    - [Data Annotations](#data-annotations-1)
+    - [Data Annotations](#data-annotations)
   - [View](#view)
     - [Razor](#razor)
     - [TagHelpers](#taghelpers)
     - [Partial Views](#partial-views)
-      - [\_ViewStart](#_viewstart)
-      - [\_ViewImports](#_viewimports)
-      - [\_Layout](#_layout)
     - [View Components](#view-components)
     - [Estados](#estados)
   - [Controller](#controller)
     - [Action Results](#action-results)
     - [Roteamento](#roteamento)
-      - [Atributos](#atributos)
     - [Parâmetros](#parâmetros)
-      - [Model Binding](#model-binding)
-      - [Múltiplos Parâmetros](#múltiplos-parâmetros)
     - [ModelState](#modelstate)
-  - [Conceitos](#conceitos)
-    - [Bundling e Minification](#bundling-e-minification)
 
 # .NET
 
@@ -81,13 +48,13 @@ Possui um processo de dupla compilação, que permite que os aplicativos desenvo
 
 O compilador converte o código de uma linguagem de programação suportada pelo .NET para uma forma intermediária (IL).
 
-### IL (Intermediate Language)
-
+<h3>IL (Intermediate Language)</h3>
+<h3></h3>
 IL é uma linguagem de baixo nível que não é específica de nenhum sistema operacional ou hardware. 
 
 Isso significa que o código IL pode ser executado em qualquer ambiente que tenha uma implementação da Common Language Runtime (CLR).
 
-### CLR (Common Language Runtime)
+<h3>CLR (Common Language Runtime)</h3>
 
 Quando um aplicativo .NET é executado, o código IL é compilado "Just-In-Time" (JIT) para o código de máquina nativo específico do sistema operacional e do hardware.
 
@@ -121,13 +88,13 @@ Permite escrever consultas utilizando LINQ (Language Integrated Query), proporci
 
 > :bulb: Confira um template de configuração de modelo de dados no caminho /Templates/Entity Framework
 
-### Modelagem de Dados
+<h3>Modelagem de Dados</h3>
 
 Permite definir um modelo de dados usando classes .NET.
 
 Cada classe corresponde a uma tabela no banco de dados e cada propriedade da classe a uma coluna na tabela.
 
-### Mecanismos de Modelagem
+<h3>Mecanismos de Modelagem</h3>
 
 |   Mecanismos   | Descrição                                                        |
 | :------------: | :--------------------------------------------------------------- |
@@ -135,7 +102,7 @@ Cada classe corresponde a uma tabela no banco de dados e cada propriedade da cla
 | Database-First | As classes são definidas a partir de um banco de dados existente |
 |  Model-First   | O modelo de dados é criado usando o Entity Framework Designer    |
 
-### DbContext
+<h3>DbContext</h3>
 
 DbContext é uma classe central no Entity Framework essencial para a comunicação entre a aplicação e o banco de dados.
 
@@ -200,11 +167,11 @@ internal class AppDbContext : DbContext
     </tbody>
 </table>
 
-### Configuração do Modelo de Dados
+<h3>Configuração do Modelo de Dados</h3>
 
 A configuração dos modelos de dados pode ser feita usando duas abordagens principais: Fluent API e Data Annotations.
 
-#### Fluent API
+<h4>Fluent API</h4>
 
 Fluent API é uma abordagem que permite configurar os modelos de dados usando uma API fluente no método `OnModelCreating` do seu `DbContext`. 
 
@@ -234,7 +201,7 @@ internal class OrderConfiguration : IEntityTypeConfiguration<Order>
 }
 ```
 
-#### Data Annotations
+<h4>Data Annotations</h4>
 
 Data Annotations são atributos que você pode adicionar diretamente às propriedades e classes do modelo para configurar o mapeamento de dados.
 
@@ -263,7 +230,7 @@ internal class Order
 }
 ```
 
-### Migrações
+<h3>Migrações</h3>
 
 Migrações são uma ferramenta que ajudam a gerenciar mudanças no esquema do banco de dados ao longo do tempo.
 
@@ -286,11 +253,11 @@ ASP.NET é uma extensão do .NET e é utilizado para construir aplicativos web d
 
 Ele fornece um modelo de programação que permite a criação de páginas web dinâmicas, APIs RESTful e outros tipos de serviços web.
 
-## Como o ASP.NET está organizado?
+<h2>Como o ASP.NET está organizado?</h2>
 
 A arquitetura do ASP.NET está dividida em dois blocos principais: Razor e Services.
 
-### Razor (Sites)
+<h3>Razor (Sites)</h3>
 
 O Razor é uma parte crucial do ASP.NET para a criação de páginas web dinâmicas.
 
@@ -303,7 +270,7 @@ Faz a transpilação do código p/ HTML, CSS e JS
 | Razor Library | Permite a criação de bibliotecas de componentes Razor reutilizáveis |
 |    Blazor     | Entrega um SPA (Single Page Application)                            |
 
-### Services (API)
+<h3>Services (API)</h3>
 
 Os serviços no ASP.NET fornecem a funcionalidade de backend necessária para suportar aplicações web e móveis.
 
@@ -319,11 +286,11 @@ O hosting no ASP.NET refere-se ao ambiente e ao processo de execução das aplic
 
 Esse ambiente pode variar dependendo de como e onde a aplicação é implantada.
 
-### In Process Hosting
+<h3>In Process Hosting</h3>
 
 <img src="https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/iis/index/_static/ancm-inprocess.png?view=aspnetcore-8.0" alt="imagem" width="650px" height="100px"/>
 
-### Out Process Hosting
+<h3>Out Process Hosting</h3>
 
 <img src="https://learn.microsoft.com/pt-br/aspnet/core/host-and-deploy/iis/index/_static/ancm-outofprocess.png?view=aspnetcore-8.0" alt="imagem" width="650px" height="100px"/>
 
@@ -337,7 +304,7 @@ Esse ambiente pode variar dependendo de como e onde a aplicação é implantada.
 <summary>Clique aqui para saber mais sobre o Kestrel.</summary>
 <p>
 
-## O que é Kestrel?
+<h2>O que é Kestrel?</h2>
 
 Kestrel é um servidor web multiplataforma e de alto desempenho embutido no .NET Core, usado principalmente com ASP.NET Core.
 
@@ -347,7 +314,7 @@ Ele processa solicitações através de um pipeline de middleware definido na ap
 
 O pipeline pode incluir middleware para autenticação, roteamento, manipulação de erros e muito mais.
 
-### Funcionamento em Ambientes de Produção
+<h3>Funcionamento em Ambientes de Produção</h3>
 
 Para ambientes de produção, é recomendável usar Kestrel atrás de um proxy reverso, para adicionar camadas adicionais de segurança e funcionalidade.
 
@@ -382,7 +349,7 @@ Muitos middlewares são fornecidos por bibliotecas e pacotes externos que você 
 
 > :bulb: Confira um template padrão de middleware no caminho /Templates/Middleware
 
-### Como funciona?
+<h3>Como funciona?</h3>
 
 O pipeline de middlewares é configurado no servidor, no arquivo `Program.cs`, antes que qualquer solicitação seja processada.
 
@@ -411,7 +378,7 @@ Cada middleware tem a capacidade de:
 - Invocar o próximo middleware no pipeline.
 - Executar alguma lógica na resposta (adicionar cabeçalhos ou modificar o conteúdo da resposta).
 
-### Porque importa?
+<h3>Porque importa?</h3>
 
 Permitem uma arquitetura modular onde diferentes responsabilidades são encapsuladas em componentes separados.
 
@@ -439,7 +406,7 @@ O ASP.NET Identity oferece suporte para autenticação de dois fatores (2FA), au
 
 Você pode estender IdentityUser e IdentityRole para adicionar propriedades personalizadas.
 
-### Getting Started
+<h3>Getting Started</h3>
 
 Defina uma classe que herda de **IdentityDbContext** e configure seu contexto de banco de dados.
 
@@ -462,7 +429,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 ```
 
-### IdentityDbContext
+<h3>IdentityDbContext</h3>
 
 É uma especialização de DbContext fornecida pelo ASP.NET Identity.
 
@@ -487,7 +454,7 @@ Ele simplifica o processo de adicionar, atualizar e remover bibliotecas e ferram
 
 Permite aos desenvolvedores compartilhar código de maneira eficiente e gerenciar as dependências do projeto.
 
-### Pacotes NuGet
+<h3>Pacotes NuGet</h3>
 
 Um pacote NuGet é uma coleção de arquivos que são compilados e empacotados em um único arquivo com extensão `.nupkg`.
 
@@ -546,6 +513,20 @@ Navegue até a pasta AppMvcFuncional e execute o comando para associação da So
 ```txt
 dotnet sln ../../<your-application-name>.sln add <your-application-name>.csproj
 ```
+
+## Conceitos
+
+### Bundling e Minification
+
+Bundling e minification são técnicas usadas para otimizar o desempenho das aplicações web.
+
+Reduzem o tempo de carregamento das páginas e melhoram a eficiência geral.
+
+`Bundling` é o processo de combinar vários arquivos (como arquivos CSS e JavaScript) em um único arquivo.
+
+`Minification` é o processo de remover todos os caracteres desnecessários dos arquivos de código sem alterar a funcionalidade do código.
+
+Para obter mais informações sobre este assunto, [clique aqui]("https://github.com/JoaoLucasAssis/.NET/tree/main/Concepts/Development/Bundling%20%26%20Minification") para ler um resumo detalhado do conceito.
 
 ## Model
 
@@ -669,7 +650,7 @@ De acordo com a convenção de nomenclatura em ASP.NET MVC, as partial views ger
 <partial name="_NavBar" />
 ```
 
-#### _ViewStart
+<h4>_ViewStart</h4>
 
 `_ViewStart.cshtml` é um arquivo no ASP.NET MVC que define o layout padrão para todas as views dentro de uma pasta e suas subpastas.
 
@@ -682,7 +663,7 @@ o arquivo está localizado na raiz do diretório na pasta /Views.
 }
 ```
 
-#### _ViewImports
+<h4>_ViewImports</h4>
 
 `_ViewImports.cshtml` é um arquivo no ASP.NET MVC que é utilizado para importar namespaces e configurar diretivas comuns que todas as views devem usar.
 
@@ -691,7 +672,7 @@ o arquivo está localizado na raiz do diretório na pasta /Views.
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 ```
 
-#### _Layout
+<h4>_Layout</h4>
 
 `_Layout.cshtml` é o arquivo que define o layout principal da aplicação.
 
@@ -850,7 +831,7 @@ app.UseEndpoints(endpoints =>
 };
 ```
 
-#### Atributos
+<h4>Atributos</h4>
 
 Os atributos de rota permitem definir regras de roteamento diretamente nos controladores e ações por meio de anotações.
 
@@ -989,7 +970,7 @@ Passagem de parâmetros refere-se à capacidade de fornecer dados para um métod
 
 Esses parâmetros podem ser extraídos de diferentes partes da solicitação, como a URL, parâmetros de consulta, corpo da solicitação, ou cabeçalhos.
 
-#### Model Binding
+<h4>Model Binding</h4>
 
 O ASP.NET MVC usa um processo chamado model binding para mapear os valores das partes da solicitação para os parâmetros dos métodos de ação.
 
@@ -1031,7 +1012,7 @@ public ActionResult Create([Bind("Name, Email")] ICollection collection)
 }
 ```
 
-#### Múltiplos Parâmetros
+<h4>Múltiplos Parâmetros</h4>
 
 Para passar múltiplos parâmetros, adicione-os à URL usando ? para o primeiro parâmetro e & para os subsequentes.
 
@@ -1068,17 +1049,3 @@ public async Task<IActionResult> Create([Bind("Id,Name,Phone,CEP,State,City")] C
     return View(client); // If ModelState is not valid, return the view with errors.
 }
 ```
-
-## Conceitos
-
-### Bundling e Minification
-
-Bundling e minification são técnicas usadas para otimizar o desempenho das aplicações web.
-
-Reduzem o tempo de carregamento das páginas e melhoram a eficiência geral.
-
-`Bundling` é o processo de combinar vários arquivos (como arquivos CSS e JavaScript) em um único arquivo.
-
-`Minification` é o processo de remover todos os caracteres desnecessários dos arquivos de código sem alterar a funcionalidade do código.
-
-Para obter mais informações sobre este assunto, [clique aqui]() para ler um resumo detalhado do conceito.
