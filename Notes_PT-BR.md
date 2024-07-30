@@ -526,7 +526,7 @@ Reduzem o tempo de carregamento das páginas e melhoram a eficiência geral.
 
 `Minification` é o processo de remover todos os caracteres desnecessários dos arquivos de código sem alterar a funcionalidade do código.
 
-Para obter mais informações sobre este assunto, [clique aqui]("https://github.com/JoaoLucasAssis/.NET/tree/main/Concepts/Development/Bundling%20%26%20Minification") para ler um resumo detalhado do conceito.
+Para obter mais informações sobre este assunto, [clique aqui](https://github.com/JoaoLucasAssis/.NET/tree/main/Concepts/Development/Bundling%20%26%20Minification) para ler um resumo detalhado do conceito.
 
 ## Model
 
