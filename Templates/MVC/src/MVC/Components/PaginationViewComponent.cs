@@ -4,7 +4,7 @@ namespace MVC.Components;
 
 public class PaginationViewComponent : ViewComponent
 {
-    public IViewComponentResult InvokeAsync(int totalItems, int currentPage, int itemsPerPage)
+    public async Task<IViewComponentResult> InvokeAsync(int totalItems, int currentPage, int itemsPerPage)
     {
         int totalPages = (int)Math.Ceiling((double)totalItems / itemsPerPage);
 
