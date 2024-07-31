@@ -19,8 +19,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-builder.Services.AddRouting(options =>
-    options.ConstraintMap["slugify"] = typeof(RouteSlugifyParameterTransformer));
+//builder.Services.AddRouting(options =>
+//    options.ConstraintMap["slugify"] = typeof(RouteSlugifyParameterTransformer));
 
 var app = builder.Build();
 
@@ -42,9 +42,13 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+//app.MapControllerRoute(
+//    name: "default",
+//    pattern: "{controller:slugify=Home}/{action:slugify=Index}/{id?}");
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller:slugify=Home}/{action:slugify=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
 

@@ -7,7 +7,8 @@ namespace MVC.Extensions.CustomTagHelpers;
 public class MyButtonTagHelper : TagHelper
 {
     private readonly IHttpContextAccessor _contextAccessor;
-    
+    private readonly LinkGenerator _linkGenerator;
+
     private string? ActionName;
     private string? ClassName;
     private string? ClassSpanIcon;
@@ -17,9 +18,11 @@ public class MyButtonTagHelper : TagHelper
 
     [HtmlAttributeName("route-id")]
     public int RouteId { get; set; }
-    public MyButtonTagHelper(IHttpContextAccessor contextAccessor)
+    public MyButtonTagHelper(IHttpContextAccessor contextAccessor, LinkGenerator linkGenerator)
     {
         _contextAccessor = contextAccessor;
+        _linkGenerator = linkGenerator;
+
     }
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
@@ -42,10 +45,22 @@ public class MyButtonTagHelper : TagHelper
                 break;
         }
 
+        var host = $"{_contextAccessor.HttpContext?.Request.Scheme}://" +
+            $"{_contextAccessor.HttpContext?.Request.Host.Value}";
+
         var controller = _contextAccessor.HttpContext?.GetRouteData().Values["controller"]?.ToString();
 
+        var route = _linkGenerator.GetPathByAction(
+            _contextAccessor.HttpContext,
+            ActionName,
+            controller,
+            values: new { id = RouteId }
+            );
+
+        var endpoint = $"{host}{route}";
+
         output.TagName = "a";
-        output.Attributes.SetAttribute("href", $"{controller}/{ActionName}/{RouteId}");
+        output.Attributes.SetAttribute("href", $"{endpoint}");
         output.Attributes.SetAttribute("class", ClassName);
 
         var span = new TagBuilder("span");
