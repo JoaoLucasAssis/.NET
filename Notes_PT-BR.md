@@ -768,7 +768,7 @@ Podem realizar ações como obter dados de uma tabela e exibir valores manipulad
 
 É uma excelente funcionalidade para componentizar recursos a página.
 
-Todos os View Components devem ficar localizados na pasta /ViewComponent.
+Todos os View Components devem ficar localizados na pasta **/ViewComponent**.
 
 > :warning: Para usar View Component deve-se adicionar a linha:
 >
@@ -777,13 +777,19 @@ Todos os View Components devem ficar localizados na pasta /ViewComponent.
 > :warning: A linha deve ser adicionada no arquivo _ViewImports.cshtml
 
 ```c#
-// All components must implement the ViewComponent class and have the InvokeAsync action
-public class AlertViewComponent : ViewComponent
-{
-    public Task<IViewComponentResult> InvokeAsync(string message)
+public class PaginationViewComponent : ViewComponent
+{   
+    // All components must implement the ViewComponent class and have the InvokeAsync action
+    public IViewComponentResult InvokeAsync(int totalItems, int currentPage, int itemsPerPage)
     {
+        int totalPages = (int)Math.Ceiling((double)totalItems / itemsPerPage);
+
         // Will return the view located in the path /Views/Shared/Components/Alert/Default.cshtml
-        return View(message);
+        return View(new
+        {
+            CurrentPage = currentPage,
+            TotalPages = totalPages
+        });
     }
 }
 ```
@@ -791,17 +797,35 @@ public class AlertViewComponent : ViewComponent
 O arquivo `Default.cshtml`:
 
 ```html
-<div class="alert alert-info">
-    @Model
-</div>
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <!-- Previous Page Button -->
+        <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+            <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">Previous</span>
+            </a>
+        </li>
+        <!-- Page Number Buttons -->
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+                <a class="page-link" href="#">@i</a>
+            </li>
+        }
+        <!-- Next Page Button -->
+        <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+            <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">Next</span>
+            </a>
+        </li>
+    </ul>
+</nav>
 ```
 
-As duas formas abaixo são válidas para chamar um View Component em uma Razor View:
+A View Component em uma Razor View:
 
 ```html
-@await Component.InvokeAsync("Alert", new { message = "Policity Privacy © 2024" })
-
-<vc:alert />
+<vc:pagination total-items="@Model.Count()" current-page="1" items-per-page="4"></vc:pagination>
 ```
 
 ### Estados
@@ -810,11 +834,11 @@ No contexto do ASP.NET MVC, "estados" referem-se às formas de armazenar e passa
 
 Permitem armazenar e transferir informações temporárias durante o ciclo de vida de uma solicitação HTTP.
 
-|Estados|Descrição|
-|:---:|:---|
-|ViewBag|Usado para passar dados do controller para a view durante o processamento da solicitação atual|
-|ViewData|Similar ao ViewBag, utilizado para passar dados do controller para a view|
-|TempData|Usado para armazenar dados que precisam ser persistidos entre solicitações|
+| Estados  | Descrição                                                                                      |
+| :------: | :--------------------------------------------------------------------------------------------- |
+| ViewBag  | Usado para passar dados do controller para a view durante o processamento da solicitação atual |
+| ViewData | Similar ao ViewBag, utilizado para passar dados do controller para a view                      |
+| TempData | Usado para armazenar dados que precisam ser persistidos entre solicitações                     |
 
 No Controller:
 
