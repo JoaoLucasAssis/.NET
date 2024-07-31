@@ -635,6 +635,65 @@ Maneira mais rica e intuitiva de integrar lógica de servidor diretamente no HTM
 | asp-validation-for | É usado para exibir mensagens de validação para um campo específico em um formulário              |
 |     asp-items      | É usado para criar uma lista suspensa (select) em um formulário, preenchendo-a com dados          |
 
+<h4>TagHelpers Customizados</h4>
+
+Permitem criar componentes HTML personalizados e reutilizáveis em diferentes partes da aplicação.
+
+Encapsulam a lógica específica de renderização, mantendo as views Razor limpas e focadas na estrutura do layout.
+
+Para criar um TagHelper customizado, crie uma pasta na raiz do seu projeto chamada **Extensions**.
+
+```txt
+/Extensions
+    /CustomTagHelpers
+        MyCustomTagHelper.cs
+```
+
+```c#
+[HtmlTargetElement("my-button", Attributes = "btn-type, route-id")] // Defines the target elements and attributes that the TagHelper will handle.
+public class MyButtonTagHelper : TagHelper
+{
+    private readonly IHttpContextAccessor _contextAccessor; // Dependency injection for IHttpContextAccessor
+
+    [HtmlAttributeName("btn-type")] // Specifies the HTML attribute that is mapped to a property in the TagHelper class
+    public ButtonType ButtonTypeSelected { get; set; }
+
+    [HtmlAttributeName("route-id")]
+    public int RouteId { get; set; }
+
+    public MyButtonTagHelper(IHttpContextAccessor contextAccessor)
+    {
+        _contextAccessor = contextAccessor; // Initialize IHttpContextAccessor
+    }
+
+    public override void Process(TagHelperContext context, TagHelperOutput output)
+    {
+        switch (ButtonTypeSelected)
+        {
+            // logic
+        }
+
+        // Get the current controller name from HttpContext and route data
+        var controller = _contextAccessor.HttpContext?.GetRouteData().Values["controller"]?.ToString();
+
+        output.TagName = "a";
+        output.Attributes.SetAttribute("href", $"{controller}/{ActionName}/{RouteId}");
+    }
+}
+```
+
+No arquivo **_ViewImports.cshtml**, registre o namespace onde seus tagHelpers customizados estão localizados.
+
+```c#
+@addTagHelper "*, your-namespace"
+```
+
+Para utilizar os tagHelpers customizados, crie uma tag com o nome definido no tagHelper e informe os valores dos atributos:
+
+```html
+<my-button btn-type="Details" route-id="@item.Id"></my-button>
+```
+
 ### Partial Views
 
 Partial Views são subcomponentes das views principais.
