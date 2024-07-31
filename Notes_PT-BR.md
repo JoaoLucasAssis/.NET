@@ -13,6 +13,7 @@
   - [Getting Started](#getting-started)
   - [Conceitos](#conceitos)
     - [Bundling e Minification](#bundling-e-minification)
+    - [Slugify](#slugify)
   - [Model](#model)
     - [DTO](#dto)
     - [Data Annotations](#data-annotations)
@@ -527,6 +528,16 @@ Reduzem o tempo de carregamento das páginas e melhoram a eficiência geral.
 `Minification` é o processo de remover todos os caracteres desnecessários dos arquivos de código sem alterar a funcionalidade do código.
 
 Para obter mais informações sobre este assunto, [clique aqui](https://github.com/JoaoLucasAssis/.NET/tree/main/Concepts/Development/Bundling%20%26%20Minification) para ler um resumo detalhado do conceito.
+
+### Slugify
+
+Slugify é um processo de conversão de uma string em um formato compatível com URL.
+
+O objetivo de formatar uma string é torná-la mais legível para humanos e mecanismos de pesquisa, além de garantir que ela contenha apenas caracteres seguros para URL.
+
+Melhora a indexação em motores de busca, criando URLs que sejam mais compreensíveis e relevantes, impactando positivamente a classificação SEO do site.
+
+Para obter mais informações sobre este assunto, [clique aqui](https://github.com/JoaoLucasAssis/.NET/tree/main/Concepts/Utilities/Slugify) para ler um resumo detalhado do conceito.
 
 ## Model
 
