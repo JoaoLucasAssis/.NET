@@ -50,7 +50,6 @@ namespace MVC.Migrations
                         .HasColumnType("CHAR(11)");
 
                     b.Property<int>("State")
-                        .HasMaxLength(2)
                         .HasColumnType("int");
 
                     b.HasKey("Id");

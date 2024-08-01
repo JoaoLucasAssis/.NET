@@ -20,7 +20,5 @@ public class Product
 
     [Required(ErrorMessage = "The product type is required.")]
     public ProductType ProductType { get; set; }
-
-    [Required(ErrorMessage = "The availability of the product must be specified.")]
     public bool IsAvailable { get; set; }
 }

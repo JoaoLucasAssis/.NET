@@ -158,4 +158,18 @@ public class ItemsController : Controller
             throw new InvalidOperationException("O contexto do banco de dados não está conectado ou a tabela Client não está acessível.");
         }
     }
+
+    private async Task<IEnumerable<Client>> GetFilteredClientsAsync(string searchTerm)
+    {
+        if (searchTerm is null)
+        {
+            return await _context.Client.ToListAsync();
+        }
+        else
+        {
+            return await _context.Client
+                .Where(c => c.Name.Contains(searchTerm))
+                .ToListAsync();
+        }
+    }
 }

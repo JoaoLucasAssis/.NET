@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Mono.TextTemplating;
 using MVC.Data;
 using MVC.Models;
 using MVC.ValueObjects;
@@ -21,9 +20,13 @@ namespace MVC.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? searchTerm)
         {
-            return View(await _context.Client.ToListAsync());
+            ViewData["SearchTerm"] = searchTerm;
+            ViewData["Controller"] = "clients";
+
+            var filteredClients = await GetFilteredClientsAsync(searchTerm);
+            return View(filteredClients);
         }
 
         [Route("details-client/{id:int}")]
@@ -154,6 +157,20 @@ namespace MVC.Controllers
                     Code = s.ToString()
                 });
             return states;
+        }
+
+        private async Task<IEnumerable<Client>> GetFilteredClientsAsync(string searchTerm)
+        {
+            if (searchTerm is null)
+            {
+                return await _context.Client.ToListAsync();
+            }
+            else
+            {
+                return await _context.Client
+                    .Where(c => c.Name.Contains(searchTerm))
+                    .ToListAsync();
+            }
         }
     }
 }

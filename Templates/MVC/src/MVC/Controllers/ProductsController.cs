@@ -20,9 +20,13 @@ namespace MVC.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? searchTerm)
         {
-            return View(await _context.Product.ToListAsync());
+            ViewData["SearchTerm"] = searchTerm;
+            ViewData["Controller"] = "products";
+
+            var filteredProducts = await GetFilteredProductsAsync(searchTerm);
+            return View(filteredProducts);
         }
 
         [Route("details-product/{id:int}")]
@@ -165,6 +169,20 @@ namespace MVC.Controllers
                     Type = s.ToString()
                 });
             return types;
+        }
+
+        private async Task<IEnumerable<Product>> GetFilteredProductsAsync(string searchTerm)
+        {
+            if (searchTerm is null)
+            {
+                return await _context.Product.ToListAsync();
+            }
+            else
+            {
+                return await _context.Product
+                    .Where(p => p.Name.Contains(searchTerm))
+                    .ToListAsync();
+            }
         }
     }
 }
