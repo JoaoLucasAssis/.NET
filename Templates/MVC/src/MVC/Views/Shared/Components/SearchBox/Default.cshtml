@@ -1,0 +1,8 @@
+﻿@model dynamic
+
+<div class="col-md-6">
+    <form asp-controller="@Model.Controller" asp-action="Index" class="d-flex">
+        <input type="text" name="searchTerm" value="@Model.SearchTerm" placeholder="Search..." class="form-control me-2" />
+        <input type="submit" value="Search" class="btn btn-outline-primary" />
+    </form>
+</div>
