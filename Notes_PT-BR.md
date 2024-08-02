@@ -14,6 +14,7 @@
   - [Conceitos](#conceitos)
     - [Bundling e Minification](#bundling-e-minification)
     - [Slugify](#slugify)
+    - [Areas](#areas)
   - [Model](#model)
     - [DTO](#dto)
     - [Data Annotations](#data-annotations)
@@ -538,6 +539,16 @@ O objetivo de formatar uma string é torná-la mais legível para humanos e meca
 Melhora a indexação em motores de busca, criando URLs que sejam mais compreensíveis e relevantes, impactando positivamente a classificação SEO do site.
 
 Para obter mais informações sobre este assunto, [clique aqui](https://github.com/JoaoLucasAssis/.NET/tree/main/Concepts/Utilities/Slugify) para ler um resumo detalhado do conceito.
+
+### Areas
+
+No ASP.NET, as áreas são um recurso usado para organizar funcionalidades relacionadas em grupos distintos.
+
+As áreas ajudam a isolar diferentes partes da aplicação, como controladores e views, em módulos independentes.
+
+Uma área divide a aplicação em módulos distintos. Cada módulo é representado por uma pasta e pode conter seus próprios controladores, modelos e views.
+
+Para obter mais informações sobre este assunto, [clique aqui](https://github.com/JoaoLucasAssis/.NET/tree/main/Concepts/Development/Areas) para ler um resumo detalhado do conceito.
 
 ## Model
 
