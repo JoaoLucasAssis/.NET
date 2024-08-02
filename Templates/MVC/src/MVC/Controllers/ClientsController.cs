@@ -23,8 +23,6 @@ namespace MVC.Controllers
         public async Task<IActionResult> Index(string? searchTerm)
         {
             ViewData["SearchTerm"] = searchTerm;
-            ViewData["Controller"] = "clients";
-
             var filteredClients = await GetFilteredClientsAsync(searchTerm);
             return View(filteredClients);
         }
