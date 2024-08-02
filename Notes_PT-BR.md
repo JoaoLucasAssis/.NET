@@ -410,7 +410,7 @@ Para que um serviço seja injetado no código é necessário registrá-lo ao con
 Usa uma interface ou classe base para abstrair a implementação da dependência.
 
 ```c#
-// Usa a interface para definir o tipo do serviço a ser injetado, mas a instância real é criada a partir da classe concreta
+// Uses the interface to define the type of service to be injected, but the actual instance is created from the concrete class
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 ```
 
