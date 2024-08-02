@@ -6,6 +6,7 @@
   - [Hosting](#hosting)
   - [Pipeline](#pipeline)
   - [Middleware](#middleware)
+  - [Injeção de Dependência](#injeção-de-dependência)
   - [Identity](#identity)
   - [NuGet](#nuget)
   - [Logging e LogLevel](#logging-e-loglevel)
@@ -387,6 +388,110 @@ Permitem uma arquitetura modular onde diferentes responsabilidades são encapsul
 Podem ser reutilizados em diferentes aplicações.
 
 Oferecem uma maneira flexível de adicionar ou remover funcionalidades da aplicação.
+
+## Injeção de Dependência
+
+A injeção de dependência é um padrão de projeto que ajuda a reduzir o acoplamento de código em sua aplicação.
+
+No contexto do ASP.NET Core, a injeção de dependência é usada para adicionar serviços e gerenciar a vida útil dos objetos.
+
+<h3>Como funciona?</h3>
+
+O ASP.NET Core possui um contêiner de injeção de dependência integrado, o `IServiceProvide`, onde as dependências são registradas.
+
+Este contêiner é responsável por construir os objetos e fornecê-los quando necessário.
+
+Quando uma instância de um objeto é solicitada, o ASP.NET cuida da sua criação e fornecimento, ocultando a complexidade de sua instância.
+
+<h3>Configuração</h3>
+
+Para que um serviço seja injetado no código é necessário registrá-lo ao contêiner.
+
+Usa uma interface ou classe base para abstrair a implementação da dependência.
+
+```c#
+// Usa a interface para definir o tipo do serviço a ser injetado, mas a instância real é criada a partir da classe concreta
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+```
+
+Para uma controller fazer o uso do serviço registrado é de costume injetar este serviço via construtor.
+
+A estrutura assume a responsabilidade de criar uma instância da dependência e de descartá-la quando não for mais necessária.
+
+```c#
+public class MyButtonTagHelper : TagHelper
+{
+    private readonly IHttpContextAccessor _contextAccessor;
+    private readonly LinkGenerator _linkGenerator;
+
+    // IServiceProvider creates and provides the necessary instances for the constructor, which are assigned to variables
+    public MyButtonTagHelper(IHttpContextAccessor contextAccessor, LinkGenerator linkGenerator)
+    {
+        _contextAccessor = contextAccessor;
+        _linkGenerator = linkGenerator;
+    }
+}
+```
+
+Garante que todas as dependências sejam fornecidas no momento da criação do objeto.
+
+Quando você injeta dependências pelo construtor, o contêiner controla a criação e a vida útil desses objetos (transiente, scoped ou singleton).
+
+Se não for possível usar o construtor para injeção de dependência, você pode injetar a dependência diretamente na ação.
+
+> :warning: A instância da dependência só poderá ser usada dentro do escopo da ação.
+
+```c#
+public IActionResult About([FromServices] IDateTime dateTime)
+{
+    return Content( $"Current server time: {dateTime.Now}");
+}
+```
+
+Quando você injeta dependências diretamente em uma ação, a instância da dependência pode não ser gerenciada da mesma forma que quando injetada pelo construtor.
+
+<h3>Ciclos de vida</h3>
+
+No ASP.NET Core, o ciclo de vida dos serviços define a duração e o escopo de uma instância do serviço durante a execução da aplicação. Existem três principais ciclos de vida para serviços:
+
+|   Ciclo    | Descrição                                                                                          | Uso                                                                                                                                       | Registro                                    |
+| :--------: | :------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------ |
+| Transiente | Os serviços são criados cada vez que são solicitados                    | Ideal para serviços leves e sem estado, que não precisam compartilhar dados entre as solicitações                                         | AddTransient<IService, Service>(); |
+|   Scoped   | Os serviços são criados uma vez por solicitação                            | Ideal para serviços que precisam compartilhar dados durante uma solicitação, mas não devem manter estado entre diferentes solicitações | AddScoped<IService, Service>();    |
+| Singleton  | Os serviços são criados uma única vez durante a vida útil da aplicação. | Ideal para serviços que mantêm estado global ou são pesados para criar e configurar                                                        | AddSingleton<IService, Service>(); |
+
+<h3>Serviços com chave</h3>
+
+No ASP.NET Core, você pode registrar serviços no contêiner de injeção de dependência com uma chave específica para diferenciar as implementações.
+
+Um serviço é associado a uma chave, utilizando **AddKeyedSingleton**, **AddKeyedScoped** ou **AddKeyedTransient** para registrá-la.
+
+Acesse um serviço registrado especificando a chave com o atributo **[FromKeyedServices]**.
+
+```c#
+builder.Services.AddKeyedSingleton<ICache, BigCache>("big");
+builder.Services.AddKeyedSingleton<ICache, SmallCache>("small");
+
+[Route("/cache")]
+public class CustomServicesApiController : Controller
+{
+    [HttpGet("big-cache")]
+    public ActionResult<object> GetOk([FromKeyedServices("big")] ICache cache)
+    {
+        return cache.Get("data-mvc");
+    }
+}
+
+public class MyHub : Hub
+{
+    public void Method([FromKeyedServices("small")] ICache cache)
+    {
+        Console.WriteLine(cache.Get("signalr"));
+    }
+}
+```
+
+É uma técnica poderosa para resolver diferentes implementações de serviços com base em condições específicas.
 
 ## Identity
 
