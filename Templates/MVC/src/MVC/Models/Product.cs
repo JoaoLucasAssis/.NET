@@ -1,5 +1,7 @@
-﻿using MVC.ValueObjects;
+﻿using MVC.Areas.Inventory.Models;
+using MVC.ValueObjects;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVC.Models;
 
@@ -20,5 +22,13 @@ public class Product
 
     [Required(ErrorMessage = "The product type is required.")]
     public ProductType ProductType { get; set; }
-    public bool IsAvailable { get; set; }
+
+    public bool IsAvailable => Qty > 0;
+
+    [Range(1, int.MaxValue, ErrorMessage = "Quantity must be greater than 0.")]
+    public int Qty => Stock?.Qty ?? 0;
+
+    [Required(ErrorMessage = "The stock ID is required.")]
+    public int StockId { get; set; }
+    public Stock? Stock { get; set; }
 }

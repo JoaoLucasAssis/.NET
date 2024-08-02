@@ -14,5 +14,8 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(e => e.Description).HasColumnType("VARCHAR(60)");
         builder.Property(e => e.Price).IsRequired();
         builder.Property(e => e.ProductType).HasConversion<string>();
+
+        builder.Ignore(e => e.Qty);
+        builder.Ignore(e => e.IsAvailable);
     }
 }

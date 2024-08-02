@@ -45,9 +45,11 @@ namespace MVC.Controllers
         }
 
         [Route("create-product")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var stocks = await _context.Stock.ToListAsync();
             var types = ProductTypesOptions();
+            ViewData["Stocks"] = new SelectList(stocks, "Id", "Id");
             ViewData["Types"] = new SelectList(types, "Id", "Type");
 
             return View();
@@ -55,8 +57,9 @@ namespace MVC.Controllers
 
         [HttpPost("create-product")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,ProductType,IsAvailable")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,ProductType,StockId")] Product product)
         {
+            ModelState.Remove("Qty");
             if (ModelState.IsValid)
             {
                 _context.Add(product);
@@ -78,7 +81,9 @@ namespace MVC.Controllers
                 return NotFound();
             }
 
+            var stocks = await _context.Product.ToListAsync();
             var types = ProductTypesOptions();
+            ViewData["Stocks"] = new SelectList(stocks, "Id", "Id");
             ViewData["Types"] = new SelectList(types, "Id", "Type");
 
             return View(product);
@@ -86,28 +91,17 @@ namespace MVC.Controllers
 
         [HttpPost("edit-product/{id:int}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,ProductType,IsAvailable")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,ProductType,StockId")] Product product)
         {
             if (id != product.Id || !ProductExists(product.Id))
             {
                 return NotFound();
             }
 
-            ModelState.Remove("Price");
-
-            var dbProduct = await _context.Product.FirstOrDefaultAsync(p => p.Id == id);
-            if (dbProduct == null)
-            {
-                return NotFound();
-            }
-            dbProduct.Name = product.Name;
-            dbProduct.Description = product.Description;
-            dbProduct.ProductType = product.ProductType;
-            dbProduct.IsAvailable = product.IsAvailable;
-
+            ModelState.Remove("Qty");
             if (ModelState.IsValid)
             {
-               _context.Update(dbProduct);
+               _context.Update(product);
                 await _context.SaveChangesAsync();
                 TempData["Success"] = "Operation completed successfully!";
                 return RedirectToAction(nameof(Index));

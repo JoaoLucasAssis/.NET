@@ -4,6 +4,7 @@ using MVC.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240801224224_UpdateProductProperties")]
+    partial class UpdateProductProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,9 +34,7 @@ namespace MVC.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Qty")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
+                        .HasColumnType("int");
 
                     b.Property<int>("StoreId")
                         .HasColumnType("int");
@@ -42,7 +43,7 @@ namespace MVC.Migrations
 
                     b.HasIndex("StoreId");
 
-                    b.ToTable("Stocks", (string)null);
+                    b.ToTable("Stock");
                 });
 
             modelBuilder.Entity("MVC.Areas.Inventory.Models.Store", b =>
@@ -56,16 +57,16 @@ namespace MVC.Migrations
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("VARCHAR(120)");
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("VARCHAR(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Stores", (string)null);
+                    b.ToTable("Store");
                 });
 
             modelBuilder.Entity("MVC.Models.Client", b =>
@@ -188,6 +189,11 @@ namespace MVC.Migrations
                     b.Property<string>("ProductType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Qty")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<int>("StockId")
                         .HasColumnType("int");

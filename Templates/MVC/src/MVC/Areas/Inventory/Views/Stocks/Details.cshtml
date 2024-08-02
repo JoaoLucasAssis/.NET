@@ -1,0 +1,49 @@
+﻿@model MVC.Areas.Inventory.Models.Stock
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div>
+    <dl class="row mt-5">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Qty)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Qty)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Store)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Store.Name) | @Html.DisplayFor(model => model.Store.Location)
+        </dd>
+    </dl>
+
+    <h4>Products in this Stocks</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Description</th>
+                <th>Product Type</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Products)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    <td>@item.ProductType</td>
+                    <td>@item.Price.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+    <a asp-action="Index">Back to List</a>
+</div>
