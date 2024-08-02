@@ -58,3 +58,18 @@ Copie o arquivo `_ViewImports.cshtml` para a raiz da pasta para habilitar o uso 
 Para informar a área a que uma controller pertence, informe o nome da área utilizando o atributo [Area("")].
 
 O nome nome deve corresponder exatamente ao nome da pasta que você criou dentro da pasta **/Areas**.
+
+```c#
+[Area("Inventory")] // The area name is the name of folder: /Areas/ ---> Inventory <--- /Controller/StocksController.cs
+[Authorize]
+public class StocksController : Controller
+{
+    private readonly ApplicationDbContext _context;
+
+    public StocksController(ApplicationDbContext context)
+    {
+        _context = context;
+    }
+
+    // ...logic
+```
