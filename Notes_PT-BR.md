@@ -16,6 +16,8 @@
     - [Bundling e Minification](#bundling-e-minification)
     - [Slugify](#slugify)
     - [Areas](#areas)
+    - [CSRF](#csrf)
+    - [XSS](#xss)
   - [Model](#model)
     - [DTO](#dto)
     - [Data Annotations](#data-annotations)
@@ -654,6 +656,26 @@ As áreas ajudam a isolar diferentes partes da aplicação, como controladores e
 Uma área divide a aplicação em módulos distintos. Cada módulo é representado por uma pasta e pode conter seus próprios controladores, modelos e views.
 
 Para obter mais informações sobre este assunto, [clique aqui](https://github.com/JoaoLucasAssis/.NET/tree/main/Concepts/Development/Areas) para ler um resumo detalhado do conceito.
+
+### CSRF
+
+Cross-Site Request Forgery (CSRF) é um ataque que engana um usuário autenticado para executar ações indesejadas em um site.
+
+O atacante usa o navegador do usuário para enviar uma solicitação não autorizada, aproveitando a sessão do usuário com um site legítimo.
+
+É crucial proteger aplicações contra CSRF porque esses ataques podem comprometer a integridade dos dados do usuário e realizar ações indesejadas em nome do usuário.
+
+Para obter mais informações sobre este assunto, [clique aqui](https://github.com/JoaoLucasAssis/.NET/tree/main/Concepts/Security/CSRF) para ler um resumo detalhado do conceito.
+
+### XSS
+
+Cross-Site Scripting (XSS) é um ataque onde o atacante insere código JavaScript malicioso em uma página web.
+
+Esse código é executado no navegador da vítima, permitindo ao atacante roubar informações sensíveis, como cookies ou tokens de sessão, ou manipular o comportamento da página.
+
+Pode ser usados para roubar credenciais de login, obter informações privadas, manipular o conteúdo da página ou realizar outras ações maliciosas em nome do usuário.
+
+Para obter mais informações sobre este assunto, [clique aqui](https://github.com/JoaoLucasAssis/.NET/tree/main/Concepts/Security/XSS) para ler um resumo detalhado do conceito.
 
 ## Model
 
