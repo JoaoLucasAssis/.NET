@@ -456,11 +456,11 @@ Quando você injeta dependências diretamente em uma ação, a instância da dep
 
 No ASP.NET Core, o ciclo de vida dos serviços define a duração e o escopo de uma instância do serviço durante a execução da aplicação. Existem três principais ciclos de vida para serviços:
 
-|   Ciclo    | Descrição                                                                                          | Uso                                                                                                                                       | Registro                                    |
-| :--------: | :------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------ |
-| Transiente | Os serviços são criados cada vez que são solicitados                    | Ideal para serviços leves e sem estado, que não precisam compartilhar dados entre as solicitações                                         | AddTransient<IService, Service>(); |
-|   Scoped   | Os serviços são criados uma vez por solicitação                            | Ideal para serviços que precisam compartilhar dados durante uma solicitação, mas não devem manter estado entre diferentes solicitações | AddScoped<IService, Service>();    |
-| Singleton  | Os serviços são criados uma única vez durante a vida útil da aplicação. | Ideal para serviços que mantêm estado global ou são pesados para criar e configurar                                                        | AddSingleton<IService, Service>(); |
+|   Ciclo    | Descrição                                                               | Uso                                                                                                                                    | Registro                           |
+| :--------: | :---------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------- |
+| Transiente | Os serviços são criados cada vez que são solicitados                    | Ideal para serviços leves e sem estado, que não precisam compartilhar dados entre as solicitações                                      | AddTransient<IService, Service>(); |
+|   Scoped   | Os serviços são criados uma vez por solicitação                         | Ideal para serviços que precisam compartilhar dados durante uma solicitação, mas não devem manter estado entre diferentes solicitações | AddScoped<IService, Service>();    |
+| Singleton  | Os serviços são criados uma única vez durante a vida útil da aplicação. | Ideal para serviços que mantêm estado global ou são pesados para criar e configurar                                                    | AddSingleton<IService, Service>(); |
 
 <h3>Serviços com chave</h3>
 
@@ -554,6 +554,193 @@ Ele fornece uma configuração pré-definida para as tabelas necessárias para a
 | AspNetRoleClaims | Armazena declarações associadas a papéis                                                                |
 
 Simplifica a configuração e a integração do ASP.NET Identity com Entity Framework Core, ainda permitindo configurações do modelo de dados usando EF Core.
+
+<h3>Autenticação</h3>
+
+Autenticação é o processo de verificar a identidade de um usuário.
+
+É a forma de garantir que uma pessoa é quem diz ser.
+
+Serve para assegurar que apenas usuários legítimos tenham acesso ao sistema ou aos recursos protegidos.
+
+É o primeiro passo na implementação de segurança em uma aplicação.
+
+<h4>Como funciona no Identity?</h4>
+
+No ASP.NET Identity, a autenticação é gerenciada através de cookies.
+
+Quando um usuário faz login, o sistema cria um cookie de autenticação que contém um token que identifica o usuário.
+
+Este cookie é enviado com cada solicitação subsequente para que o sistema possa reconhecer o usuário e manter a sessão ativa.
+
+O ASP.NET Identity fornece um middleware para gerenciar a autenticação e assegurar que as requisições sejam processadas de acordo com o status de autenticação do usuário.
+
+```c#
+app.UseAuthentication(); // Enable authentication middleware
+```
+
+<h3>Autorização</h3>
+
+Autorização é o processo de determinar se um usuário autenticado tem permissão para acessar um recurso específico ou realizar uma ação.
+
+Serve para controlar o acesso a diferentes partes da aplicação ou a operações específicas, com base nas permissões do usuário.
+
+É crucial para proteger recursos sensíveis e garantir que apenas usuários com as permissões adequadas possam acessá-los.
+
+<h4>Como funciona no Identity?</h4>
+
+No ASP.NET Identity, a autorização pode ser configurada usando **roles**, **claims** e **policies**. 
+
+Essas abordagens ajudam a definir regras sobre quem pode acessar o quê e sob quais condições.
+
+| Permissão | Descrição                                                                                                                                                                         |
+| :-------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|   Roles   | São grupos de permissões que podem ser atribuídos a usuários. Permite que você defina permissões globais e simples                                                                |
+|  Claims   | São informações específicas associadas a um usuário, como nome, email ou permissões detalhadas. Permite criar regras mais detalhadas baseadas em atributos específicos do usuário |
+|  Policy   | Combinam roles e claims para definir regras complexas sobre quais usuários têm acesso a quais recursos, combinando múltiplos requisitos                                           |
+
+<table style="width: 100%; border-collapse: collapse;">
+    <thead>
+        <tr style="background-color: #f2f2f2;">
+            <th style="border: 1px solid #ddd; padding: 10px; vertical-align: top; text-align: center;">Role</th>
+            <th style="border: 1px solid #ddd; padding: 10px; vertical-align: top; text-align: center;">Claim</th>
+            <th style="border: 1px solid #ddd; padding: 10px; vertical-align: top; text-align: center;">Policy</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="border: 1px solid #ddd; padding: 10px; vertical-align: top;">
+                <pre style="height: 300px; padding: 5px; margin: 0; box-sizing: border-box; overflow-x: auto; white-space: pre-wrap;"><code>
+// controller
+[Authorize(Roles = "Admin")]
+public IActionResult AdminOnly()
+{
+    return View();
+}
+                </code></pre>
+            </td>
+            <td style="border: 1px solid #ddd; padding: 10px; vertical-align: top;">
+                <pre style="height: 300px; padding: 5px; margin: 0; box-sizing: border-box; overflow-x: auto; white-space: pre-wrap;"><code>
+// controller
+[Authorize(Policy = "CanEdit")]
+public IActionResult Edit()
+{
+    return View();
+}
+                </code></pre>
+            </td>
+            <td style="border: 1px solid #ddd; padding: 10px; vertical-align: top;">
+                <pre style="height: 150px; padding: 5px; margin: 0; box-sizing: border-box; overflow-x: auto; white-space: pre-wrap;"><code>
+// Program.cs
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("CanEdit", policy =>
+        policy.RequireClaim("Edit", "true"));
+});
+                </code></pre>
+                <pre style="height: 150px; padding: 5px; margin: 0; box-sizing: border-box; overflow-x: auto; white-space: pre-wrap;"><code>
+// controller
+[Authorize(Policy = "CanEdit")]
+public IActionResult Edit()
+{
+    return View();
+}
+                </code></pre>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h4>Autorização personalizada</h4>
+
+Autorização personalizada com claims permite definir regras de acesso específicas com base em informações (claims) associadas ao usuário.
+
+Serve para criar regras de acesso mais granulares e específicas que não podem ser facilmente definidas apenas com roles.
+
+Isso é útil quando você precisa de uma lógica de autorização que vai além dos papéis tradicionais (roles) e pode exigir verificação de informações adicionais associadas ao usuário.
+
+Crie um arquivo `CustomAuthorization.cs` na pasta **/Extensions** e adicione as seguintes classes:
+
+`CustomAuthorization` contém um método estático para validar se o usuário possui uma claim específica.
+
+```c#
+public class CustomAuthorization
+{
+    public static bool UserClaimValidation(HttpContext context, string claimName, string claimValue)
+    {
+        if (context.User.Identity == null) throw new InvalidOperationException();
+
+        return context.User.Identity.IsAuthenticated &&
+            context.User.Claims.Any(c => c.Type == claimName && c.Value.Split(',').Contains(claimValue));
+    }
+}
+```
+
+`ClaimRequestFilter` implementa o filtro de autorização que verifica se o usuário está autenticado e possui a claim necessária.
+
+```c#
+public class ClaimRequestFilter : IAuthorizationFilter
+{
+    private readonly Claim _claim;
+
+    public ClaimRequestFilter(Claim claim)
+    {
+        _claim = claim;
+    }
+
+    public void OnAuthorization(AuthorizationFilterContext context)
+    {
+        if (context.HttpContext.User.Identity == null) throw new InvalidOperationException();
+
+        if (!context.HttpContext.User.Identity.IsAuthenticated)
+        {
+            context.Result = new RedirectToRouteResult(
+                new RouteValueDictionary(
+                    new
+                    {
+                        area = "Identity",
+                        page = "Account/Login",
+                        ReturnUrl = context.HttpContext.Request.Path.ToString()
+                    }
+                )
+            );
+        }
+
+        if (!CustomAuthorization.UserClaimValidation(context.HttpContext, _claim.Type, _claim.Value))
+        {
+            context.Result = new StatusCodeResult(403);
+        }
+    }
+}
+```
+
+`ClaimAuthorizationAttribute` define um atributo personalizado que aplica o filtro de autorização com base em claims.
+
+```c#
+public class ClaimAuthorizationAttribute : TypeFilterAttribute
+{
+    public ClaimAuthorizationAttribute(string claimName, string claimValue) : base(typeof(ClaimRequestFilter))
+    {
+        Arguments = new object[] { new Claim(claimName, claimValue) };
+    }
+}
+```
+
+Para aplicar a autorização personalizada em uma action de um controller, use o atributo **ClaimAuthorization** na action desejada:
+
+```c#
+[ClaimAuthorization("product-manager", "create")]
+public IActionResult Create()
+{
+    return View();
+}
+```
+
+Na tabela **AspNetUserClaims** inclua um array com as claims que define as permissões concedidas a cada usuário.
+
+|id|userId                              |type           |value             |
+|:-|:-----------------------------------|:--------------|:-----------------|
+|1 |e5441243-2f93-4a65-8449-863f2435d884|product-manager|create,edit,delete|
 
 ## NuGet
 
