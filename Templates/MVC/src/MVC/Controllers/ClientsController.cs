@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MVC.Data;
+using MVC.Extensions;
 using MVC.Models;
 using MVC.ValueObjects;
 
 namespace MVC.Controllers
 {
     [Route("clients")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class ClientsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -28,6 +29,7 @@ namespace MVC.Controllers
         }
 
         [Route("details-client/{id:int}")]
+        [ClaimAuthorization("Admin", "read")]
         public async Task<IActionResult> Details(int id)
         {
             ContextConnected();
@@ -43,6 +45,7 @@ namespace MVC.Controllers
         }
 
         [Route("create-client")]
+        [ClaimAuthorization("Admin", "create")]
         public IActionResult Create()
         {
             var states = StatesOptions();
@@ -53,6 +56,7 @@ namespace MVC.Controllers
 
         [HttpPost("create-client")]
         [ValidateAntiForgeryToken]
+        [ClaimAuthorization("Admin", "create")]
         public async Task<IActionResult> Create([Bind("Id,Name,Phone,CEP,State,City")] Client client)
         {
             if (ModelState.IsValid)
@@ -66,6 +70,7 @@ namespace MVC.Controllers
         }
 
         [Route("edit-client/{id:int}")]
+        [ClaimAuthorization("Admin", "edit")]
         public async Task<IActionResult> Edit(int id)
         {
             ContextConnected();
@@ -83,6 +88,7 @@ namespace MVC.Controllers
 
         [HttpPost("edit-client/{id:int}")]
         [ValidateAntiForgeryToken]
+        [ClaimAuthorization("Admin", "edit")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Phone,CEP,State,City")] Client client)
         {
             if (id != client.Id || !ClientExists(client.Id))
@@ -102,6 +108,7 @@ namespace MVC.Controllers
         }
 
         [Route("delete-client/{id:int}")]
+        [ClaimAuthorization("Admin", "delete")]
         public async Task<IActionResult> Delete(int id)
         {
             ContextConnected();
@@ -118,6 +125,7 @@ namespace MVC.Controllers
 
         [HttpPost("delete-client/{id:int}"), ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [ClaimAuthorization("Admin", "delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var client = await _context.Client.FindAsync(id);
