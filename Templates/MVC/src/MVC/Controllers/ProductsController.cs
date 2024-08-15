@@ -55,11 +55,19 @@ namespace MVC.Controllers
 
         [HttpPost("create-product")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,ProductType,StockId")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,ImageUpload,Price,ProductType,StockId")] Product product)
         {
+            ModelState.Remove("Image");
             ModelState.Remove("Qty");
             if (ModelState.IsValid)
             {
+                var imgPrefix = Guid.NewGuid() + "_";
+                if(!await UploadProductImage(product.ImageUpload, imgPrefix))
+                {
+                    return View(product);
+                }
+                product.Image = imgPrefix + product.ImageUpload.FileName;
+
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 TempData["Success"] = "Operation completed successfully!";
@@ -79,7 +87,7 @@ namespace MVC.Controllers
                 return NotFound();
             }
 
-            var stocks = await _context.Product.ToListAsync();
+            var stocks = await _context.Stock.ToListAsync();
             var types = ProductTypesOptions();
             ViewData["Stocks"] = new SelectList(stocks, "Id", "Id");
             ViewData["Types"] = new SelectList(types, "Id", "Type");
@@ -89,16 +97,29 @@ namespace MVC.Controllers
 
         [HttpPost("edit-product/{id:int}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,ProductType,StockId")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,ImageUpload,Price,ProductType,StockId")] Product product)
         {
             if (id != product.Id || !ProductExists(product.Id))
             {
                 return NotFound();
             }
 
+            ModelState.Remove("Image");
             ModelState.Remove("Qty");
             if (ModelState.IsValid)
             {
+                var productDb = await _context.Product.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+                product.Name = productDb?.Name;
+                if (product.ImageUpload != null)
+                {
+                    var imgPrefix = Guid.NewGuid() + "_";
+                    if (!await UploadProductImage(product.ImageUpload, imgPrefix))
+                    {
+                        return View(product);
+                    }
+                    product.Image = imgPrefix + product.ImageUpload.FileName;
+                }
+
                _context.Update(product);
                 await _context.SaveChangesAsync();
                 TempData["Success"] = "Operation completed successfully!";
@@ -175,6 +196,34 @@ namespace MVC.Controllers
                     .Where(p => p.Name.Contains(searchTerm))
                     .ToListAsync();
             }
+        }
+    
+        private async Task<bool> UploadProductImage(IFormFile file, string imgPrefix)
+        {
+            if (file.Length <= 0) return false;
+
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", imgPrefix + file.FileName);
+
+            try
+            {
+                var directory = Path.GetDirectoryName(path);
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, $"An error occurred while saving the file: {ex.Message}");
+                return false;
+            }
+
+            return true;
         }
     }
 }
