@@ -1,5 +1,6 @@
 ﻿using MVC.Areas.Inventory.Models;
 using MVC.ValueObjects;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,6 +16,11 @@ public class Product
 
     [StringLength(60, ErrorMessage = "The product description cannot exceed 60 characters.")]
     public string? Description { get; set; }
+
+    [NotMapped]
+    [DisplayName("Image")]
+    public IFormFile ImageUpload { get; set; }
+    public string Image { get; set; }
 
     [Required(ErrorMessage = "The product price is required.")]
     [Range(0.01, double.MaxValue, ErrorMessage = "The price must be greater than zero.")]
