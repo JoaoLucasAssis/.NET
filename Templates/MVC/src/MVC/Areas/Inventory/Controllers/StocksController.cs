@@ -94,7 +94,7 @@ namespace MVC.Areas.Inventory.Controllers
             return View(stock);
         }
 
-        [Route("{id:int}/delete-stock")]
+        [Route("delete-stock/{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
             var stock = await _context.Stock
@@ -108,7 +108,7 @@ namespace MVC.Areas.Inventory.Controllers
             return View(stock);
         }
 
-        [HttpPost("{id:int}/delete-stock"), ActionName("Delete")]
+        [HttpPost("delete-stock/{id:int}"), ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
