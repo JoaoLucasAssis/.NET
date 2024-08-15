@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MVC.Data;
 using MVC.Models;
+using MVC.Services;
 using MVC.ValueObjects;
 
 namespace MVC.Controllers
@@ -13,10 +14,12 @@ namespace MVC.Controllers
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IImageUploadService _imageUploadService;
 
-        public ProductsController(ApplicationDbContext context)
+        public ProductsController(ApplicationDbContext context, IImageUploadService imageUploadService)
         {
             _context = context;
+            _imageUploadService = imageUploadService;
         }
 
         [AllowAnonymous]
@@ -62,7 +65,7 @@ namespace MVC.Controllers
             if (ModelState.IsValid)
             {
                 var imgPrefix = Guid.NewGuid() + "_";
-                if(!await UploadProductImage(product.ImageUpload, imgPrefix))
+                if(!await _imageUploadService.UploadProductImage(ModelState, product.ImageUpload, imgPrefix))
                 {
                     return View(product);
                 }
@@ -113,7 +116,7 @@ namespace MVC.Controllers
                 if (product.ImageUpload != null)
                 {
                     var imgPrefix = Guid.NewGuid() + "_";
-                    if (!await UploadProductImage(product.ImageUpload, imgPrefix))
+                    if (!await _imageUploadService.UploadProductImage(ModelState, product.ImageUpload, imgPrefix))
                     {
                         return View(product);
                     }
@@ -196,34 +199,6 @@ namespace MVC.Controllers
                     .Where(p => p.Name.Contains(searchTerm))
                     .ToListAsync();
             }
-        }
-    
-        private async Task<bool> UploadProductImage(IFormFile file, string imgPrefix)
-        {
-            if (file.Length <= 0) return false;
-
-            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", imgPrefix + file.FileName);
-
-            try
-            {
-                var directory = Path.GetDirectoryName(path);
-                if (!Directory.Exists(directory))
-                {
-                    Directory.CreateDirectory(directory);
-                }
-
-                using (var stream = new FileStream(path, FileMode.Create))
-                {
-                    await file.CopyToAsync(stream);
-                }
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, $"An error occurred while saving the file: {ex.Message}");
-                return false;
-            }
-
-            return true;
         }
     }
 }
