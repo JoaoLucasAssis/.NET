@@ -540,6 +540,6 @@ Pode ser configurado no arquivo `appsettings.json` ou via código no método Con
 
 ```
 
-<a href="#aspnet" style="text-decoration: none; position: absolute; left: 50%; transform: translateX(-50%); margin-top: 50px">
-        <div style="width: 50px; height: 50px; border: 5px solid; border-radius: 50%; display: flex;  justify-content: center; align-items: center; font-size: 36px;">↑</div>
-</a>
+<div align="center">
+    <a href="#aspnet">Voltar ao topo &#8593;</a>
+</div>
